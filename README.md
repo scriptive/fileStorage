@@ -68,6 +68,9 @@ file.download({
     // xmlHttp.responseType = "json";
     // xmlHttp.responseType = "text";
     // xmlHttp.responseType = 'arraybuffer';
+  },
+  progress: function(Percentage){
+    console.log(Percentage);
   }
 }).then(function(e){
   console.log('success');
