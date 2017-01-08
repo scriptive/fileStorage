@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>IndexedDB</title>
+<script type="text/javascript">
+document.addEventListener('DOMContentLoaded', function() {
+  window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
+  window.IDBTransaction = window.IDBTransaction || window.webkitIDBTransaction || window.OIDBTransaction || window.msIDBTransaction;
+  var db, dbName = 'testDB', dbVersion=1;
+  
+  if(window.indexedDB){
+    console.log("Your Browser does support IndexedDB");
+    var request = window.indexedDB.open(dbName, dbVersion);
+    request.onerror = function(event){
+        console.log("Error opening DB", event);
+    }
+    request.onupgradeneeded = function(event){
+        console.log("Upgrading");
+        // db = event.target.result;
+        db = event.target.result;
+        db.onerror = function(event) {
+          console.log('Error loading database.');
+        };
+        var objectStore = db.createObjectStore("file");
+    };
+    request.onblocked  = function(event){
+        console.log("req.onblocked");
+        // db = event.target.result;
+    }
+    request.onsuccess  = function(event){
+        console.log("Success opening DB");
+        db = request.result;
+    }
+    document.getElementById("deleteDatabase").addEventListener("click", function(event){
+      if (db)db.close();
+      var deleteDatabase = indexedDB.deleteDatabase(dbName);
+      deleteDatabase.onblocked=function(e){
+        console.log('onblocked',e);
+      }
+      deleteDatabase.onerror=function(e){
+        console.log('onerror',e);
+      }
+      deleteDatabase.onsuccess=function(e){
+        console.log('onsuccess',e);
+      }
+      deleteDatabase.onupgradeneeded=function(e){
+        console.log('onupgradeneeded',e);
+      }
+    }, false);
+    document.getElementById('save').addEventListener('click',function(event){
+      var file= event.target, fileEventID = file.dataset.id || 'tmp', fileEvent = file.dataset.file;
+      if (fileEvent){
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", fileEvent, true);
+        // xhr.responseType = "blob";
+        // xhr.responseType = "document";
+        // xhr.responseType = "json";
+        // xhr.responseType = "text";
+        xhr.responseType = 'arraybuffer';
+        xhr.addEventListener("load", function (e) {
+        }, false);
+        xhr.addEventListener('readystatechange', function(e) {
+          if (xhr.readyState === 4)addDatabase('file',fileEventID,this.response);
+        });
+        xhr.send();
+      }
+    },false);
+    function addDatabase(table,id,row){
+      var transaction = db.transaction([table],"readwrite");
+      transaction.oncomplete = function(event) {
+          console.log("Success transaction");
+      };
+      transaction.onerror = function(event) {
+          console.log("Error transaction");
+      };  
+      var objectStore = transaction.objectStore(table);
+      objectStore.put(row,id);
+      objectStore.oncomplete = function(event) {
+          console.log("Success objectStore");
+      };
+      objectStore.onerror = function(event) {
+          console.log("Error objectStore");
+      };  
+    }
+    document.getElementById('get').addEventListener('click',function(event){
+      var file= event.target, fileEventID = file.dataset.id || 'tmp', fileEvent = file.dataset.file;
+      if (fileEvent)getDatabase('file',fileEventID);
+    },false);
+    function getDatabase(table,id){
+      var transaction = db.transaction([table],"readonly");
+      var store = transaction.objectStore(table);
+      //Perform the add
+      // var contains = store.indexNames.contains(id);
+      var storeCount = store.count();
+      // console.log(store);
+      storeCount.onsuccess = function(e) {
+        // console.log(this.result);
+      }
+      var storeCursor = store.openCursor(id);
+      storeCursor.onsuccess = function(e) {
+        console.log(this.result);
+        // var cursor = e.target.target;
+        // if (cursor) { // key already exist
+        //    cursor.update(obj);
+        // } else { // key not exist
+        //    objectStore.add(obj)
+        // }
+      };
+      var request = store.get(id);
+      request.onerror = function(e) {
+        console.log("Error",e);
+      }
+      request.onsuccess = function(e) {
+        // console.log(this.result);
+        var blob = new Blob([this.result]);
+        // ['readAsText','readAsArrayBuffer', 'readAsBinaryString', 'readAsDataURL']
+        // var blob = new Blob([file]);
+        // var imageURI = window.URL.createObjectURL(blob);
+        // console.log(blob);
+        var reader = new FileReader();
+        // reader.readAsText(blob);
+        // reader.readAsArrayBuffer(blob);
+        reader.readAsBinaryString(blob);
+        // reader.readAsDataURL(blob);
+        reader.onload = function(event) { 
+          // console.log(reader.result);
+          // console.log(event.target.result);
+          console.log('onload');
+        }
+        reader.onloadend = function (e) {
+          if (reader.result == 'undefined'){
+            console.log('result is empty');
+          } else {
+            console.log('done');
+            // console.log(reader.result);
+          }
+        }
+        reader.onerror = function (e) {
+          console.log('error',e);
+        }
+      } 
+    }
+    document.getElementById('delete').addEventListener('click',function(event){
+      var file= event.target, fileEventID = file.dataset.id || 'tmp', fileEvent = file.dataset.file;
+      if (fileEventID){
+        deleteDatabase('file',fileEventID);
+      }
+    },false);
+    function deleteDatabase(table,id){
+      var transaction = db.transaction([table],"readwrite");
+      var store = transaction.objectStore(table);
+      //Perform the add
+      var request = store.delete(id);
+      request.onerror = function(e) {
+        console.log("Error",e);
+      }
+      request.onsuccess = function(e) {
+        console.log('success');
+      } 
+    }
+  }
+});
+</script>
+</head>
+  <body>
+    <input type="file" id="files" name="files[]" multiple />
+    <output id="list"></output>
+    <ul>
+      <li>
+        <h3>Database</h3>
+        <ul>
+          <li id="createDatabase">createDatabase</li>
+          <li id="deleteDatabase">deleteDatabase</li>
+        </ul>
+      </li>
+      <li>
+        <h3>Save</h3>
+        <ul id="save">
+          <li data-id="app" data-file="css/app.css">app | css/app.css</li>
+          <li data-id="desktop" data-file="css/app.desktop.css">desktop | css/app.desktop.css</li>
+          <li data-file="css/app.mobile.css">css/app.mobile.css</li>
+          <li data-id="icon" data-file="img/icon.png">img/icon.png</li>
+          <li data-id="json" data-file="font/config.json">font/config.json</li>
+          <li data-id="laisiangtho/kjv.xml" data-file="font/config.json">font/config.json</li>
+        </ul>
+      </li>
+      <li>
+        <h3>Get</h3>
+        <ul id="get">
+          <li data-id="json" data-file="font/config.json">font/config.json</li>
+          <li data-id="laisiangtho/kjv.xml" data-file="font/config.json">font/config.json</li>
+        </ul>
+      </li>
+      <li>
+        <h3>Delete</h3>
+        <ul id="delete">
+          <li data-id="json">font/config.json</li>
+          <li data-id="laisiangtho/kjv.xml">font/config.json</li>
+        </ul>
+      </li>
+    </ul>
+  </body>
+</html>

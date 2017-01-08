@@ -1,0 +1,48 @@
+{
+  "common": {
+    "name": "fileStorage",
+    "version":"1.0.0",
+    "build": "1.0.0",
+    "library": {},
+    "dist": {
+      "file": {}
+    }
+  },
+  "individual": {
+    "default": {
+      "dist": {}
+    },
+    "web": {
+      "dist": {}
+    }
+  },
+  "gulp": {
+    "sass": {
+      "outputStyle": "compressed"
+    },
+    "js": {
+      "compress": true,
+      "preserveComments": "license"
+    },
+    "custom": {
+      "fileStorage": {
+        "source":"asset/filestorage/fileStorage.js",
+        "target":["dev/js","dist"],
+        "pipe":{
+          "gulp-include":{},
+          "gulp-uglify":{
+            "mangle":false,
+            "output":{
+              "beautify": false, 
+              "comments":"license"
+            },
+            "compress":true,
+            "preserveComments":"license"
+          },
+          "gulp-concat":"filestorage.min.js"
+        },
+        "watch":"asset/filestorage/*.js"
+      }
+    }
+  }
+}

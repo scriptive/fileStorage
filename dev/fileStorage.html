@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>fileStorage</title>
+<script src="js/filestorage.min.js" charset="utf-8"></script>
+<script type="text/javascript">
+document.addEventListener('DOMContentLoaded', function() {
+  var file = fileStorage({
+        // Base: 'storage',
+        // Base: 'database',
+        // RequestQuota: 1073741824,
+        Permission: 1,
+        objectStore:{
+          version:2
+        }
+      },
+      {
+        done: function(status) {
+          // NOTE: complatedCallback, return value can be string, depend on success or error!
+          // REVIEW: executed either success or fail!
+          console.log('init.done',status);
+        },
+        fail: function(status) {
+          // NOTE: failCallback, return value can be string!
+          // REVIEW: executed to warn the Browser does not support 'requestFileSystem', message might be different Browser to Browser!
+          // console.log('init.fail',status);
+        },
+        success: function(fs) {
+          // NOTE: successCallback! Can be started from 'fs.root'!
+          // REVIEW: Browser supports 'requestFileSystem'!
+          console.warn('init.success',fs);
+        }
+      }
+  );
+  document.getElementById('deleteDatabase').addEventListener('click',function(event){
+    var o = event.target, database = o.dataset.database;
+    if (database) {
+      console.log('delete',database,'?');
+      // if (file.objectStore)file.objectStore.close();
+      // var deleteDatabase = file.database.deleteDatabase(database);
+      
+      // if (file.objectStore)file.objectStore.close();
+      // var deleteDatabase = file.database.deleteDatabase(database);
+      // deleteDatabase.onblocked=function(e){
+      //   console.log('onblocked',e);
+      // }
+      // deleteDatabase.onerror=function(e){
+      //   console.log('onerror',e);
+      // }
+      // deleteDatabase.onsuccess=function(e){
+      //   console.log('onsuccess',e);
+      // }
+      // deleteDatabase.onupgradeneeded=function(e){
+      //   console.log('onupgradeneeded',e);
+      // }
+    }
+  },false);
+  document.getElementById('download').addEventListener('submit', function(evt){
+    var o = evt.target.elements;
+    var url = o.url.value;
+    var readAs = o.readAs.value;
+    var responseType = o.responseType.value;
+    var urlLocal = (o.urlLocal.value=='true')?true:o.urlLocal.value;
+    var requestMethod =o.requestMethod.value;
+    var requestCache = o.requestCache.value;
+    
+    // NOTE: how **download** work!
+    file.download({
+      url: url,
+      urlLocal: urlLocal,
+      readAs: readAs,
+      // readAs: 'createObjectURL',
+      // readAs: 'readAsText',
+      // readAs: 'readAsArrayBuffer',
+      // readAs: 'readAsDataURL',
+      // readAs: 'readAsBinaryString',
+
+      requestMethod: requestMethod,
+      // requestMethod: 'GET',
+      // requestMethod: 'POST',
+      
+      requestCache:requestCache,
+      // requestCache:false,
+      // requestCache:true,
+      before: function(xmlHttp){
+        // xmlHttp.responseType = "blob";
+        // xmlHttp.responseType = "document";
+        // xmlHttp.responseType = "json";
+        // xmlHttp.responseType = "text";
+        // xmlHttp.responseType = 'arraybuffer';
+        if (responseType)xmlHttp.responseType=responseType;
+      }
+    }).then(function(e){
+      console.log('success',e);
+    },function(e){
+      console.log('fail',e);
+    }).then(function(e){
+      console.log('done');
+    });
+    evt.preventDefault();
+  },false);
+  document.getElementById('save').addEventListener('submit', function(evt){
+    var o = evt.target.elements;
+    var urlLocal = o.urlLocal.value;
+    var fileContent = o.fileContent.value;
+    var fileType = o.fileType.value;
+    if (urlLocal) {
+      // NOTE: how **save** work!
+      file.save({
+        urlLocal: urlLocal,
+        fileContent: fileContent,
+        fileType: fileType
+      }).then(function(e){
+        console.log('success',e);
+      },function(e){
+        console.log('fail',e);
+      }).then(function(e){
+        console.log('done');
+      });
+    } else {
+      console.log('urlLocal?');
+    }
+    evt.preventDefault();
+  },false);
+
+  document.getElementById('open').addEventListener('submit', function(evt){
+    var o = evt.target.elements;
+    var urlLocal = o.urlLocal.value;
+    var readAs = o.readAs.value;
+    if (urlLocal) {
+      // NOTE: how **open** work!
+      file.open({
+        urlLocal: urlLocal,
+        readAs: readAs
+      }).then(function(e){
+        console.log('success',e);
+      },function(e){
+        console.log('fail',e);
+      }).then(function(e){
+        console.log('done');
+      });
+    } else {
+      console.log('urlLocal?');
+    }
+    evt.preventDefault();
+  },false);
+  document.getElementById('delete').addEventListener('submit', function(evt){
+    var o = evt.target.elements;
+    var urlLocal = o.urlLocal.value;
+    if (urlLocal) {
+      // NOTE: how **delete** work!
+      file.delete({
+        urlLocal: urlLocal,
+        fileNotFound: true // fileNotFound if true return successCallback, even the file is not found!
+      }).then(function(e){
+        console.log('success',e);
+      },function(e){
+        console.log('fail',e);
+      }).then(function(e){
+        console.log('done');
+      });
+    } else {
+      console.log('urlLocal?');
+    }
+    evt.preventDefault();
+  },false);
+  document.getElementById('downloadThenSave').addEventListener('submit', function(evt){
+    var o = evt.target.elements;
+    var url = o.url.value;
+    var readAs = o.readAs.value;
+    var responseType = o.responseType.value;
+    var urlLocal = (o.urlLocal.value=='true')?true:o.urlLocal.value;
+    var requestMethod =o.requestMethod.value;
+    var requestCache = o.requestCache.value;
+    // NOTE: how **download** then **save** work!
+    file.download({
+      url: url,
+      urlLocal: urlLocal,
+      readAs: readAs,
+      requestMethod: requestMethod,
+      requestCache:requestCache,
+      fileOption:{
+        create:true
+      },
+      before: function(xmlHttp){
+        if (responseType)xmlHttp.responseType=responseType;
+      }
+    }).then(function(e){
+      console.log('success',e);
+    },function(e){
+      console.log('fail',e);
+    }).then(function(e){
+      console.log('done');
+    });
+    evt.preventDefault();
+  },false);
+});
+</script>
+<style media="screen">
+ul{
+  list-style: none;
+}
+ul>li {
+  /*margin: 1%; padding: 1%;*/
+}
+ul>li>h2 {
+  color: #ccc;
+}
+ul li ol li {
+}
+form table{
+  width: 100%; max-width: 350px;
+  box-shadow:inset 0px 0 1px 1px #ccc;
+  padding: 5px; margin-top: 5px; border-radius: 3px;
+}
+form table thead tr td{
+  font-size: 140%;
+  color: #ccc;
+}
+form table tbody tr td:first-child{
+  width: 90px;
+  text-align: right; color: #a3a3a3;
+}
+form table tbody tr td:last-child{
+}
+form table tbody tr td:last-child>*{
+  padding:3px 5px;
+}
+form table tbody tr td:last-child input[type="submit"]{
+}
+</style>
+</head>
+    <body>
+      <div id="code"></div>
+      <ul>
+        <li>
+          <h1>fileStorage demo</h1>
+        </li>
+        <li>
+          <h2>deleteDatabase</h2>
+          <ol id="deleteDatabase">
+            <li data-database="fileStorage">fileStorage</li>
+            <li data-database="storage">storage</li>
+            <li data-database="localFileStorage">localFileStorage</li>
+            <li data-database="testDB">testDB</li>
+            <li>testDB</li>
+          </ol>
+        </li>
+        <li>
+          <!-- <audio id="AudioElement" controls autoplay>
+            <source src="horse.ogg" type="audio/ogg">
+            <source src="horse.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+          </audio> -->
+        </li>
+        <li>
+          <form id="download" action="#" method="post">
+            <table>
+              <tbody>
+                <tr>
+                  <td>url</td>
+                  <td>
+                    <input type="text" name="url" list="download-urlList" placeholder="Pick a URL..">
+                    <datalist id="download-urlList">
+                      <option value="tmp/Jailhouse-Rock-Leiber-Stoller.mp3">
+                      <option value="tmp/test.xml">
+                      <option value="tmp/test.json">
+                    </datalist>
+                  </td>
+                </tr>
+                <tr>
+                  <td>requestMethod</td>
+                  <td>
+                    <select name="requestMethod">
+                      <option value="GET">GET</option>
+                      <option value="POST">POST</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td>requestCache</td>
+                  <td>
+                    <select name="requestCache">
+                      <option value="">false</option>
+                      <option value="true">true</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td>responseType</td>
+                  <td>
+                    <select name="responseType">
+                      <option value="">Default</option>
+                      <option value="blob">Blob</option>
+                      <option value="arraybuffer">Arraybuffer</option>
+                      <option value="document">document</option>
+                      <option value="json">JSON</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td>readAs</td>
+                  <td>
+                    <select name="readAs">
+                      <option value="">Default</option>
+                      <option value="readAsText">Text</option>
+                      <option value="readAsArrayBuffer">ArrayBuffer</option>
+                      <option value="readAsDataURL">DataURL</option>
+                      <option value="readAsBinaryString">BinaryString</option>
+                      <option value="createObjectURL">createObjectURL</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td>urlLocal</td>
+                  <td>
+                    <input type="text" name="urlLocal" list="download-urlLocalList" placeholder="set urlLocal">
+                    <datalist id="download-urlLocalList">
+                      <option value="true">
+                      <option value="directory/filename">
+                    </datalist>
+                  </td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td><input type="submit" value="Download"></td>
+                </tr>
+              </tbody>
+            </table>
+          </form>
+        </li>
+        <li>
+          <form id="save" action="#" method="post">
+            <table>
+              <tbody>
+                <tr>
+                  <td>fileContent</td>
+                  <td>
+                    <textarea name="fileContent" rows="4"></textarea>
+                  </td>
+                </tr>
+                <tr>
+                  <td>fileType</td>
+                  <td>
+                    <input type="text" name="fileType" list="save-fileTypeList" placeholder="set fileType">
+                    <datalist id="save-fileTypeList">
+                      <option value="text/plain">
+                      <option value="application/json">
+                      <option value="image/jpeg">
+                      <option value="image/png">
+                      <option value="application/xml">
+                      <option value="application/javascript">
+                      <option value="application/pdf">
+                      <option value="text/css">
+                      <option value="audio/mp3">
+                    </datalist>
+                  </td>
+                </tr>
+                <tr>
+                  <td>urlLocal</td>
+                  <td>
+                    <input type="text" name="urlLocal" list="save-urlLocalList" placeholder="set urlLocal">
+                    <datalist id="save-urlLocalList">
+                      <option value="directory/filename">
+                    </datalist>
+                  </td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td><input type="submit" value="Save"></td>
+                </tr>
+              </tbody>
+            </table>
+          </form>
+        </li>
+        <li>
+          <form id="open" action="#" method="post">
+            <table>
+              <tbody>
+                <tr>
+                  <td>urlLocal</td>
+                  <td>
+                    <input type="text" name="urlLocal" list="open-urlLocalList" placeholder="set urlLocal">
+                    <datalist id="open-urlLocalList">
+                      <option value="directory/filename">
+                    </datalist>
+                  </td>
+                </tr>
+                <tr>
+                  <td>readAs</td>
+                  <td>
+                    <select name="readAs">
+                      <option value="">Default</option>
+                      <option value="readAsText">Text</option>
+                      <option value="readAsArrayBuffer">ArrayBuffer</option>
+                      <option value="readAsDataURL">DataURL</option>
+                      <option value="readAsBinaryString">BinaryString</option>
+                      <option value="createObjectURL">createObjectURL</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td><input type="submit" value="Open"></td>
+                </tr>
+              </tbody>
+            </table>
+          </form>
+        </li>
+        <li>
+          <form id="delete" action="#" method="post">
+            <table>
+              <tbody>
+                <tr>
+                  <td>urlLocal</td>
+                  <td>
+                    <input type="text" name="urlLocal" list="delete-urlLocalList" placeholder="set urlLocal">
+                    <datalist id="delete-urlLocalList">
+                      <option value="directory/filename">
+                    </datalist>
+                  </td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td><input type="submit" value="Delete"></td>
+                </tr>
+              </tbody>
+            </table>
+          </form>
+        </li>
+        <li>
+          <form id="downloadThenSave" action="#" method="post">
+            <table>
+              <tbody>
+                <tr>
+                  <td>url</td>
+                  <td>
+                    <input type="text" name="url" list="downloadThenSave-urlList" placeholder="Pick a URL..">
+                    <datalist id="downloadThenSave-urlList">
+                      <option value="tmp/Jailhouse-Rock-Leiber-Stoller.mp3">
+                      <option value="tmp/test.xml">
+                      <option value="tmp/test.json">
+                    </datalist>
+                  </td>
+                </tr>
+                <tr>
+                  <td>requestMethod</td>
+                  <td>
+                    <select name="requestMethod">
+                      <option value="GET">GET</option>
+                      <option value="POST">POST</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td>requestCache</td>
+                  <td>
+                    <select name="requestCache">
+                      <option value="">false</option>
+                      <option value="true">true</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td>responseType</td>
+                  <td>
+                    <select name="responseType">
+                      <option value="">Default</option>
+                      <option value="blob">Blob</option>
+                      <option value="arraybuffer">Arraybuffer</option>
+                      <option value="document">document</option>
+                      <option value="json">JSON</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td>readAs</td>
+                  <td>
+                    <select name="readAs">
+                      <option value="">Default</option>
+                      <option value="readAsText">Text</option>
+                      <option value="readAsArrayBuffer">ArrayBuffer</option>
+                      <option value="readAsDataURL">DataURL</option>
+                      <option value="readAsBinaryString">BinaryString</option>
+                      <option value="createObjectURL">createObjectURL</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td>urlLocal</td>
+                  <td>
+                    <input type="text" name="urlLocal" list="downloadThenSave-urlLocalList" placeholder="set urlLocal">
+                    <datalist id="downloadThenSave-urlLocalList">
+                      <option value="true">
+                      <option value="directory/filename">
+                    </datalist>
+                  </td>
+                </tr>
+                <tr>
+                  <td>fileContent</td>
+                  <td>
+                    defined by "readAs"
+                  </td>
+                </tr>
+                <tr>
+                  <td>fileType</td>
+                  <td>
+                    defined by "XMLHttpRequest"
+                  </td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td><input type="submit" value="Download then save"></td>
+                </tr>
+              </tbody>
+            </table>
+          </form>
+        </li>
+      </ul>
+    </body>
+</html>

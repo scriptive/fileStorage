@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+  <title>fileStorage</title>
+  <link rel="icon" href="img/icon.png" type="image/png"/>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="lib/scriptive.min.js"></script>
+  <script src="js/script.js"></script>
+  <script>
+  app.document({
+    config:{
+      Meta:{
+        script:['filestorage min'],
+        agent:false
+      },
+      Execute:['load']
+    },
+    ready:function(){
+      this.config.msg.info = document.querySelector("div#msg");
+    }
+  });
+  </script>
+</head>
+<body>
+  <header>
+    <h1 title="1.0.1">fileStorage demo</h1>
+    <div id="msg" title="...">a moment please!</div>
+  </header>
+  <ul>
+    <li>
+      <ol>
+        <li>
+          <h1 title="1.0.1">fileStorage demo</h1>
+          <div id="msg" title="...">a moment please!</div>
+        </li>
+        <li>Download, Save, Open, Delete</li>
+      </ol>
+    </li>
+    <li>
+      <form id="download" action="#" method="post">
+        <div>
+          <p>url</p>
+          <p>
+            <input type="text" name="url" list="download-urlList" placeholder="Pick a URL..">
+            <datalist id="download-urlList">
+              <option value="tmp/Jailhouse-Rock-Leiber-Stoller.mp3">
+              <option value="tmp/test.xml">
+              <option value="tmp/test.json">
+            </datalist>
+          </p>
+        </div>
+        <div>
+          <p>requestMethod</p>
+          <p>
+            <select name="requestMethod">
+              <option value="GET">GET</option>
+              <option value="POST">POST</option>
+            </select>
+          </p>
+        </div>
+        <div>
+          <p>requestCache</p>
+          <p>
+            <select name="requestCache">
+              <option value="">false</option>
+              <option value="true">true</option>
+            </select>
+          </p>
+        </div>
+        <div>
+          <p>responseType</p>
+          <p>
+            <select name="responseType">
+              <option value="">Default</option>
+              <option value="blob">Blob</option>
+              <option value="arraybuffer">Arraybuffer</option>
+              <option value="document">document</option>
+              <option value="json">JSON</option>
+            </select>
+          </p>
+        </div>
+        <div>
+          <p>readAs</p>
+          <p>
+            <select name="readAs">
+              <option value="">Default</option>
+              <option value="readAsText">Text</option>
+              <option value="readAsArrayBuffer">ArrayBuffer</option>
+              <option value="readAsDataURL">DataURL</option>
+              <option value="readAsBinaryString">BinaryString</option>
+              <option value="createObjectURL">createObjectURL</option>
+            </select>
+          </p>
+        </div>
+        <div>
+          <p>urlLocal</p>
+          <p>
+            <input type="text" name="urlLocal" list="download-urlLocalList" placeholder="set urlLocal">
+            <datalist id="download-urlLocalList">
+              <option value="true">
+              <option value="directory/filename">
+            </datalist>
+          </p>
+        </div>
+        <div>
+          <p><input type="submit" value="Download"></p>
+        </div>
+      </form>
+      <form id="save" action="#" method="post">
+        <div>
+          <p>fileContent</p>
+          <p>
+            <textarea name="fileContent" rows="4"></textarea>
+          </p>
+        </div>
+        <div>
+          <p>fileType</p>
+          <p>
+            <input type="text" name="fileType" list="save-fileTypeList" placeholder="set fileType">
+            <datalist id="save-fileTypeList">
+              <option value="text/plain">
+              <option value="application/json">
+              <option value="image/jpeg">
+              <option value="image/png">
+              <option value="application/xml">
+              <option value="application/javascript">
+              <option value="application/pdf">
+              <option value="text/css">
+              <option value="audio/mp3">
+            </datalist>
+          </p>
+        </div>
+        <div>
+          <p>urlLocal</p>
+          <p>
+            <input type="text" name="urlLocal" list="save-urlLocalList" placeholder="set urlLocal">
+            <datalist id="save-urlLocalList">
+              <option value="directory/filename">
+            </datalist>
+          </p>
+        </div>
+        <div>
+          <p><input type="submit" value="Save"></p>
+        </div>
+      </form>
+      <form id="open" action="#" method="post">
+        <div>
+          <p>urlLocal</p>
+          <p>
+            <input type="text" name="urlLocal" list="open-urlLocalList" placeholder="set urlLocal">
+            <datalist id="open-urlLocalList">
+              <option value="directory/filename">
+            </datalist>
+          </p>
+        </div>
+        <div>
+          <p>readAs</p>
+          <p>
+            <select name="readAs">
+              <option value="">Default</option>
+              <option value="readAsText">Text</option>
+              <option value="readAsArrayBuffer">ArrayBuffer</option>
+              <option value="readAsDataURL">DataURL</option>
+              <option value="readAsBinaryString">BinaryString</option>
+              <option value="createObjectURL">createObjectURL</option>
+            </select>
+          </p>
+        </div>
+        <div>
+          <p><input type="submit" value="Open"></p>
+        </div>
+      </form>
+      <form id="delete" action="#" method="post">
+        <div>
+          <p>urlLocal</p>
+          <p>
+            <input type="text" name="urlLocal" list="delete-urlLocalList" placeholder="set urlLocal">
+            <datalist id="delete-urlLocalList">
+              <option value="directory/filename">
+            </datalist>
+          </p>
+        </div>
+        <div>
+          <p><input type="submit" value="Delete"></p>
+        </div>
+      </form>
+      <form id="downloadThenSave" action="#" method="post">
+        <div>
+          <p>url</p>
+          <p>
+            <input type="text" name="url" list="downloadThenSave-urlList" placeholder="Pick a URL..">
+            <datalist id="downloadThenSave-urlList">
+              <option value="tmp/Jailhouse-Rock-Leiber-Stoller.mp3">
+              <option value="tmp/test.xml">
+              <option value="tmp/test.json">
+            </datalist>
+          </p>
+        </div>
+        <div>
+          <p>requestMethod</p>
+          <p>
+            <select name="requestMethod">
+              <option value="GET">GET</option>
+              <option value="POST">POST</option>
+            </select>
+          </p>
+        </div>
+        <div>
+          <p>requestCache</p>
+          <p>
+            <select name="requestCache">
+              <option value="">false</option>
+              <option value="true">true</option>
+            </select>
+          </p>
+        </div>
+        <div>
+          <p>responseType</p>
+          <p>
+            <select name="responseType">
+              <option value="">Default</option>
+              <option value="blob">Blob</option>
+              <option value="arraybuffer">Arraybuffer</option>
+              <option value="document">document</option>
+              <option value="json">JSON</option>
+            </select>
+          </p>
+        </div>
+        <div>
+          <p>readAs</p>
+          <p>
+            <select name="readAs">
+              <option value="">Default</option>
+              <option value="readAsText">Text</option>
+              <option value="readAsArrayBuffer">ArrayBuffer</option>
+              <option value="readAsDataURL">DataURL</option>
+              <option value="readAsBinaryString">BinaryString</option>
+              <option value="createObjectURL">createObjectURL</option>
+            </select>
+          </p>
+        </div>
+        <div>
+          <p>urlLocal</p>
+          <p>
+            <input type="text" name="urlLocal" list="downloadThenSave-urlLocalList" placeholder="set urlLocal">
+            <datalist id="downloadThenSave-urlLocalList">
+              <option value="true">
+              <option value="directory/filename">
+            </datalist>
+          </p>
+        </div>
+        <div>
+          <p>fileContent</p>
+          <p>
+            defined by "readAs"
+          </p>
+        </div>
+        <div>
+          <p>fileType</p>
+          <p>
+            defined by "XMLHttpRequest"
+          </p>
+        </div>
+        <div>
+          <p><input type="submit" value="Download then save"></p>
+        </div>
+      </form>
+    </li>
+  </ul>
+</body>
+</html>
