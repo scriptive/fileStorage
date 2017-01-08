@@ -43,7 +43,7 @@ var file = fileStorage({
   }
 );
 ```
-
+## Download
 how **download** work!
 ```javascript
 file.download({
@@ -77,7 +77,7 @@ file.download({
   console.log('done');
 });
 ```
-
+## Save
 how **save** work!
 ```javascript
 file.save({
@@ -92,7 +92,7 @@ file.save({
   console.log('done');
 });
 ```
-
+## Open
 how **open** work!
 ```javascript
 file.open({
@@ -106,7 +106,7 @@ file.open({
   console.log('done');
 });
 ```
-
+## Delete
 how **delete** work!
 ```javascript
 file.delete({
@@ -120,7 +120,7 @@ file.delete({
   console.log('done');
 });
 ```
-
+## Download then save
 how **download** then **save** work!
 ```javascript
 file.download({
@@ -144,7 +144,7 @@ file.download({
   console.log('done');
 });
 ```
-
+## Promise
 how **Promise** process in Javascript!
 ```javascript
 return new Promise(function(resolve, reject) {
