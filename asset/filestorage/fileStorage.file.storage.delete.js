@@ -1,5 +1,5 @@
 return new Promise(function(resolve, reject) {
-  app.user.objectRoot.getFile(Query.urlLocal, {}, function(fileEntry) {
+  app.user.objectLocal.getFile(Query.urlLocal, {}, function(fileEntry) {
     fileEntry.remove(function(e) {
         // NOTE: remove success
         resolve();

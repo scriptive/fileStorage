@@ -69,6 +69,14 @@ div#demo{
               color: #ccc;
             }
           }
+          &.version{
+            color: #ccc;
+            padding: 5px 0;
+          }
+          &.support{
+            padding-top: 10px;
+            margin-top: 10px;
+          }
         }
       }
     }

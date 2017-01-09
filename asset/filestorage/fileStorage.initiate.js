@@ -30,11 +30,11 @@ Chrome: function(done, error) {
           app.config.Permission > 0 ? win.PERSISTENT : win.TEMPORARY,
           grantedBytes,
           function(fs) {
-            // app.user.objectRoot = fs.root.toURL();
-            app.user.objectRoot = fs.root;
+            // app.user.objectLocal = fs.root.toURL();
+            app.user.objectLocal = fs.root;
             // app.user.objectStorage = fs.root;
             // objectSystem objectStore, objectDrive objectDatabase, objectStorage, fileDatabase fileStorage
-            // storeObject, storeFile, objectStore, objectDrive
+            // storeObject, storeFile, objectStore, objectDrive, objectLocal, fileStore, root, drive, fileLocal
             app.support.storage = fs;
             done(fs);
           },
@@ -68,7 +68,7 @@ Cordova: function(done, error) {
         app.config.Permission > 0 ? win.PERSISTENT : win.TEMPORARY,
         app.config.RequestQuota,
         function(fs) {
-          app.user.objectRoot = fs.root;
+          app.user.objectLocal = fs.root;
           // app.user.fs = fs.root;
           
           app.support.storage = fs;
@@ -100,7 +100,7 @@ Chrome: function(done, error) {
           grantedBytes,
           function(fs) {
             app.config.support.push('storage');
-            // app.user.objectRoot = fs.root.toURL();
+            // app.user.objectLocal = fs.root.toURL();
             app.config.Base = 'Chrome';
             done(fs);
           },
@@ -134,7 +134,7 @@ Cordova: function(done, error) {
         app.config.RequestQuota,
         function(fs) {
           app.config.support.push('storage');
-          app.user.objectRoot = fs.root.toURL();
+          app.user.objectLocal = fs.root.toURL();
           app.config.Base = 'Cordova';
           done(fs);
         },
@@ -169,7 +169,7 @@ Cordova: function(done, error) {
 //         app.config.RequestQuota,
 //         function(fs) {
 //           app.config.support.push('storage');
-//           app.user.objectRoot = fs.root.toURL();
+//           app.user.objectLocal = fs.root.toURL();
 //           done(fs);
 //         },
 //         function(e) {

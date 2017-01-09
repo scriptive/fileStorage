@@ -2,6 +2,10 @@ fileStorage -- Javascript file Storage
 ========
 Demo: https://scriptive.github.io/fileStorage
 
+[Download](dist/filestorage.min.js) lastest version.
+
+For [License](LICENSE) information.
+
 ## TODO
 
 

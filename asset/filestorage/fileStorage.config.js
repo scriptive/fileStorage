@@ -14,4 +14,3 @@ objectStore:{
 // system:'window',
 // Permission:[0,1]
 // ResponseQuota:0,
-// objectRoot:null,

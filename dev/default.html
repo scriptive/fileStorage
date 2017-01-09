@@ -34,8 +34,8 @@
 <body>
   <ul id="notification">
     <li>
-      <h1 title="1.0.1">fileStorage demo</h1>
-      <p>1.0.1</p>
+      <h1 title="1.0.0">fileStorage demo</h1>
+      <p class="version">1.0.0</p>
       <div id="msg" title="...">a moment please!</div>
     </li>
   </ul>
@@ -43,17 +43,24 @@
     <dl class="configuration">
       <dt>
         <h2>fileStorage</h2>
+        <p class="version">1.0.0</p>
+        <p title="Base">[storage,database]</p>
+        <p title="RequestQuota">default is 1073741824.</p>
         <p class="support" title="Support">Configuration</p>
       </dt>
       <dd>
         <pre><code>
   var file = fileStorage({
-      // Base: 'storage',
-      // Base: 'database',
-      // RequestQuota: 1073741824,
+      Base: 'storage',
+      RequestQuota: 1073741824,
       Permission: 1,
       objectStore:{
-        version:2
+        name:'fileStorage',
+        version:1,
+        file:'file',
+        other:{
+         name:'otherName',option:{}
+        }
       }
     },
     {
@@ -186,8 +193,8 @@
           <div>
             <p>fileType</p>
             <p>
-              <input type="text" name="fileType" list="save-fileTypeList" placeholder="set fileType">
-              <datalist id="save-fileTypeList">
+              <input type="text" name="fileType" list="fileTypeList" placeholder="set fileType">
+              <datalist id="fileTypeList">
                 <option value="text/plain">
                 <option value="application/json">
                 <option value="image/jpeg">

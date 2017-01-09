@@ -1,6 +1,6 @@
 /*!
     fileStorage -- Javascript file Storage
-    Version 1.0.2
+    Version 1.0.0
     https://scriptive.github.io/fileStorage
     (c) 2017
 */
@@ -14,7 +14,6 @@
     setting:{
       // =require fileStorage.setting.js
     },
-    
     config:{
       // =require fileStorage.config.js
     },
@@ -49,7 +48,7 @@
       return this.ready = new Promise(function(resolve, reject) {
         app.initiate.start(function(e) {
             // NOTE: success
-            // REVIEW: app.user.file, user.objectRoot, user.objectStore are created if they support
+            // REVIEW: app.user.file, user.objectLocal, user.objectStore are created if they support
             app.config.support = Object.keys(app.support);
             if (app.config.support.indexOf(app.config.Base) == -1)app.config.Base = app.config.support[0];
             Object.defineProperty(app.user, 'file', {enumerable: false, value:app.file[app.config.Base]});
