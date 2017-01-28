@@ -8,7 +8,7 @@
 document.addEventListener('DOMContentLoaded', function() {
   var file = fileStorage({
         // Base: 'storage',
-        // Base: 'database',
+        Base: 'database',
         // RequestQuota: 1073741824,
         Permission: 1,
         objectStore:{
@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
         fail: function(status) {
           // NOTE: failCallback, return value can be string!
           // REVIEW: executed to warn the Browser does not support 'requestFileSystem', message might be different Browser to Browser!
-          // console.log('init.fail',status);
+          console.log('init.fail',status);
         },
         success: function(fs) {
           // NOTE: successCallback! Can be started from 'fs.root'!
@@ -37,11 +37,9 @@ document.addEventListener('DOMContentLoaded', function() {
     var o = event.target, database = o.dataset.database;
     if (database) {
       console.log('delete',database,'?');
-      // if (file.objectStore)file.objectStore.close();
-      // var deleteDatabase = file.database.deleteDatabase(database);
-      
-      // if (file.objectStore)file.objectStore.close();
-      // var deleteDatabase = file.database.deleteDatabase(database);
+      // if (file.database)file.database.close();
+      // var deleteDatabase = file.db.deleteDatabase(database);
+
       // deleteDatabase.onblocked=function(e){
       //   console.log('onblocked',e);
       // }

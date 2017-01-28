@@ -7,7 +7,7 @@ Demo: https://scriptive.github.io/fileStorage
 For [License](LICENSE) information.
 
 ## TODO
-
+- [x] open() returned [fileContent, fileType, fileSize]
 
 ## file!
 - [x] download

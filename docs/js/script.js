@@ -3,8 +3,8 @@
         e.fileStorage().then(function() {
             document.querySelector("ul#notification").style.display = "none";
             var o = document.querySelector("div#demo");
-            o.style.display = "block", document.querySelectorAll("form").forEach(function(o, n) {
-                o.addEventListener("submit", function(o) {
+            o.style.display = "block", document.querySelectorAll("form").each(function(o, n) {
+                n.addEventListener("submit", function(o) {
                     var n = o.target.elements, l = o.target.getAttribute("id");
                     l && e.demo[l](n), o.preventDefault();
                 }, !1);
@@ -20,12 +20,13 @@
                 }
             }, {
                 success: function(e) {
-                    o();
+                    console.log("success", e), o();
                 },
                 fail: function(e) {
-                    n(e);
+                    console.log("fail", e), n(e);
                 },
                 done: function(e) {
+                    console.log(e);
                     var o = document.querySelector("p.support");
                     if (e.support.length) {
                         o.innerHTML = e.support.join(" & ") + ", and using ";
@@ -37,13 +38,13 @@
         });
     }, e.demo = {
         download: function(o) {
-            var n = o.url.value, l = o.readAs.value, t = o.responseType.value, u = "true" == o.urlLocal.value || o.urlLocal.value, c = o.requestMethod.value, r = o.requestCache.value;
+            var n = o.url.value, l = o.readAs.value, t = o.responseType.value, u = "true" == o.urlLocal.value || o.urlLocal.value, c = o.requestMethod.value, s = o.requestCache.value;
             e.file.download({
                 url: n,
                 urlLocal: u,
                 readAs: l,
                 requestMethod: c,
-                requestCache: r,
+                requestCache: s,
                 before: function(e) {
                     t && (e.responseType = t);
                 }
@@ -82,10 +83,10 @@
                 console.log("done");
             }) : console.log("urlLocal?");
         },
-        delete: function(e) {
-            var o = e.urlLocal.value;
-            o ? file.delete({
-                urlLocal: o,
+        delete: function(o) {
+            var n = o.urlLocal.value;
+            n ? e.file.delete({
+                urlLocal: n,
                 fileNotFound: !0
             }).then(function(e) {
                 console.log("success", e);
@@ -96,13 +97,13 @@
             }) : console.log("urlLocal?");
         },
         downloadThenSave: function(o) {
-            var n = o.url.value, l = o.readAs.value, t = o.responseType.value, u = "true" == o.urlLocal.value || o.urlLocal.value, c = o.requestMethod.value, r = o.requestCache.value;
+            var n = o.url.value, l = o.readAs.value, t = o.responseType.value, u = "true" == o.urlLocal.value || o.urlLocal.value, c = o.requestMethod.value, s = o.requestCache.value;
             e.file.download({
                 url: n,
                 urlLocal: u,
                 readAs: l,
                 requestMethod: c,
-                requestCache: r,
+                requestCache: s,
                 fileOption: {
                     create: !0
                 },

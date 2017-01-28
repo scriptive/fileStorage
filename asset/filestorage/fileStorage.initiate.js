@@ -29,14 +29,11 @@ Chrome: function(done, error) {
         win.requestfileStorage(
           app.config.Permission > 0 ? win.PERSISTENT : win.TEMPORARY,
           grantedBytes,
-          function(fs) {
-            // app.user.objectLocal = fs.root.toURL();
-            app.user.objectLocal = fs.root;
-            // app.user.objectStorage = fs.root;
-            // objectSystem objectStore, objectDrive objectDatabase, objectStorage, fileDatabase fileStorage
-            // storeObject, storeFile, objectStore, objectDrive, objectLocal, fileStore, root, drive, fileLocal
-            app.support.storage = fs;
-            done(fs);
+          function(e) {
+            // app.user.objectLocal = e.root.toURL();
+            app.config.support.push('storage');
+            Object.defineProperty(app.user, 'storage', {enumerable: false, value:e.root});
+            done(e);
           },
           function(e) {
             error(e);
@@ -67,12 +64,10 @@ Cordova: function(done, error) {
       win.requestfileStorage(
         app.config.Permission > 0 ? win.PERSISTENT : win.TEMPORARY,
         app.config.RequestQuota,
-        function(fs) {
-          app.user.objectLocal = fs.root;
-          // app.user.fs = fs.root;
-          
-          app.support.storage = fs;
-          done(fs);
+        function(e) {
+          app.config.support.push('storage');
+          Object.defineProperty(app.user, 'storage', {enumerable: false, value:e.root});
+          done(e);
         },
         function(e) {
           error(e);

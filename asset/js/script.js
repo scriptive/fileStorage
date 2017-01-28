@@ -2,13 +2,14 @@
   app.load = function(o) {
     app.fileStorage().then(function(){
       document.querySelector("ul#notification").style.display = 'none';
-       var demo = document.querySelector("div#demo");
-       demo.style.display = 'block';
-      document.querySelectorAll('form').forEach(function(form,i){
+      var demo = document.querySelector("div#demo");
+      demo.style.display = 'block';
+      document.querySelectorAll('form').each(function(i,form){
         form.addEventListener('submit', function(evt){
           var o = evt.target.elements;
           var task = evt.target.getAttribute('id');
           if (task) app.demo[task](o);
+          // evt.preventDefault ? evt.preventDefault() : (evt.returnValue = false);
           evt.preventDefault();
         },false);
       });
@@ -20,6 +21,7 @@
   app.fileStorage = function() {
     return new Promise(function(resolve, reject) {
       app.file = fileStorage({
+            // Base:'database',
             // Permission: 1,
             objectStore:{
               version:2
@@ -27,12 +29,15 @@
           },
           {
             success: function(status) {
+              console.log('success',status);
               resolve();
             },
             fail: function(status) {
+              console.log('fail',status);
               reject(status);
             },
             done: function(response) {
+              console.log(response);
               // console.log(response);
               var support = document.querySelector("p.support");
               if (response.support.length){
@@ -133,7 +138,7 @@
       var urlLocal = o.urlLocal.value;
       if (urlLocal) {
         // NOTE: how **delete** work!
-        file.delete({
+        app.file.delete({
           urlLocal: urlLocal,
           fileNotFound: true // fileNotFound if true return successCallback, even the file is not found!
         }).then(function(e){

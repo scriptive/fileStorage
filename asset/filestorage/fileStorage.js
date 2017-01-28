@@ -1,8 +1,7 @@
 /*!
     fileStorage -- Javascript file Storage
-    Version 1.0.0
+    Version '1.0.0'
     https://scriptive.github.io/fileStorage
-    (c) 2017
 */
 (function(os,win) {
   'use strict';
@@ -10,6 +9,8 @@
   // win.resolvefileStorage;
   // window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
   // var ob='app';
+  // filesystem:http://localhost/temporary/
+  // filesystem:http://localhost/persistent/
   var app={
     setting:{
       // =require fileStorage.setting.js
@@ -31,29 +32,25 @@
     database:{
       // =require fileStorage.database.js
     },
-    support:{
-      // NOTE: app.initiate
-    },
-    request:{
-      // TODO: ?
-    },
-    resolve:{
-      // TODO: ?
-    },
+    // request:{
+    //   // TODO: ?
+    // },
+    // resolve:{
+    //   // TODO: ?
+    // },
     open:function(a,b){
       if (typeof a === 'object')app.mergeObject(app.config,a);
-      return app.ready(b);
+      return (app.config.support.length)?app.user:app.ready(b);
     },
     ready:function(response){
       return this.ready = new Promise(function(resolve, reject) {
         app.initiate.start(function(e) {
             // NOTE: success
-            // REVIEW: app.user.file, user.objectLocal, user.objectStore are created if they support
-            app.config.support = Object.keys(app.support);
+            // REVIEW: app.user.file, user.database, user.storage are created if they support
             if (app.config.support.indexOf(app.config.Base) == -1)app.config.Base = app.config.support[0];
             Object.defineProperty(app.user, 'file', {enumerable: false, value:app.file[app.config.Base]});
-            if(!app.config.message)app.config.message = app.message.RequestFileSystem;
-            resolve(app.support[app.config.Base]);
+            // if(!app.config.message)app.config.message = app.message.RequestFileSystem;
+            resolve(app.user[app.config.Base]);
         }, function(e) {
           // NOTE: fail
           if (typeof e === 'string') {

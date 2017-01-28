@@ -1,7 +1,7 @@
 return new Promise(function(resolve, reject) {
   try {
     var storeTable = app.config.objectStore.store.file, 
-    objectTransaction = app.user.objectStore.transaction([storeTable],'readwrite'),
+    objectTransaction = app.user.database.transaction([storeTable],'readwrite'),
     objectStore = objectTransaction.objectStore(storeTable);
     app.createBlob(Query);
     objectTransaction.oncomplete = function(e){
