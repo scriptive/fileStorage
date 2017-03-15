@@ -12,6 +12,8 @@ return new Promise(function(resolve, reject) {
         } else if (xmlHttp.status != 200) {
           Query.progress(Math.floor(Percentage / 7 * 100));
           Percentage++;
+        } else {
+          Query.progress(100);
         }
       }
   }, false);

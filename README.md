@@ -89,7 +89,9 @@ how **save** work!
 ```javascript
 file.save({
   urlLocal: 'directory/filename.txt',
-  fileContent: 'this is plain text',
+  blob: new Blob(['this is plain text'], {type: 'text/plain; charset=utf-8'}),
+  // data: 'this is plain text',
+  // fileContent: 'this is plain text',
   fileType: 'text/plain'
 }).then(function(e){
   console.log('success');
