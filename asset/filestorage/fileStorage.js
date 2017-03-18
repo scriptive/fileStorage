@@ -1,6 +1,6 @@
 /*!
     fileStorage -- Javascript file Storage
-    Version '1.0.0'
+    Version {package.version}-{application.buildDate}
     https://scriptive.github.io/fileStorage
 */
 (function(os,win) {
@@ -66,11 +66,12 @@
           reject(app.config);
         });
       }).then(function(e) {
-        app.hasCallbackMethod(response,'success')(e);
+        app.hasCallbackMethod(response,'success').call(app.user,e);
       }, function(e) {
-        app.hasCallbackMethod(response,'fail')(e);
+        app.hasCallbackMethod(response,'fail').call(app.user,e);
       }).then(function(){
-        app.hasCallbackMethod(response,'done')(app.config);
+        app.hasCallbackMethod(response,'done').call(app.user,app.config);
+        // app.hasCallbackMethod(response,'done')(app.config);
         return app.user;
       }), this.user;
     },

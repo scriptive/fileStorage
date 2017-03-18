@@ -1,21 +1,27 @@
 (function(app) {
-  app.load = function(o) {
+  app.versionNumber = '{application.version}';
+  app.dataVersion = function(e){
+    e.innerHTML=app.versionNumber;
+  };
+  app.initiate = function(o) {
+    var notification = document.querySelector("ul#notification");
+    notification.querySelector('p').innerHTML=app.versionNumber;
     app.fileStorage().then(function(){
-      document.querySelector("ul#notification").style.display = 'none';
-      var demo = document.querySelector("div#demo");
-      demo.style.display = 'block';
+      notification.style.display = 'none';
+      notification.remove();
+      document.querySelector("div#demo").style.display = 'block';
       document.querySelectorAll('form').each(function(i,form){
         form.addEventListener('submit', function(evt){
           var o = evt.target.elements;
           var task = evt.target.getAttribute('id');
           if (task) app.demo[task](o);
-          // evt.preventDefault ? evt.preventDefault() : (evt.returnValue = false);
           evt.preventDefault();
         },false);
       });
     },function(e){
-      // console.log(e);
-      this.config.msg.info.innerHTML='this Browser does not support the storage system!'
+      app.config.msg.info.innerHTML='this Browser does not support the storage system!'
+    }).then(function(){
+      app.dataContent();
     });
   };
   app.fileStorage = function() {

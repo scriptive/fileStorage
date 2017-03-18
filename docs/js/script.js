@@ -1,16 +1,20 @@
 !function(e) {
-    e.load = function(o) {
-        e.fileStorage().then(function() {
-            document.querySelector("ul#notification").style.display = "none";
-            var o = document.querySelector("div#demo");
-            o.style.display = "block", document.querySelectorAll("form").each(function(o, n) {
+    e.versionNumber = "1.0.2", e.dataVersion = function(o) {
+        o.innerHTML = e.versionNumber;
+    }, e.initiate = function(o) {
+        var n = document.querySelector("ul#notification");
+        n.querySelector("p").innerHTML = e.versionNumber, e.fileStorage().then(function() {
+            n.style.display = "none", n.remove(), document.querySelector("div#demo").style.display = "block", 
+            document.querySelectorAll("form").each(function(o, n) {
                 n.addEventListener("submit", function(o) {
                     var n = o.target.elements, l = o.target.getAttribute("id");
                     l && e.demo[l](n), o.preventDefault();
                 }, !1);
             });
-        }, function(e) {
-            this.config.msg.info.innerHTML = "this Browser does not support the storage system!";
+        }, function(o) {
+            e.config.msg.info.innerHTML = "this Browser does not support the storage system!";
+        }).then(function() {
+            e.dataContent();
         });
     }, e.fileStorage = function() {
         return new Promise(function(o, n) {
@@ -38,13 +42,13 @@
         });
     }, e.demo = {
         download: function(o) {
-            var n = o.url.value, l = o.readAs.value, t = o.responseType.value, u = "true" == o.urlLocal.value || o.urlLocal.value, c = o.requestMethod.value, s = o.requestCache.value;
+            var n = o.url.value, l = o.readAs.value, t = o.responseType.value, u = "true" == o.urlLocal.value || o.urlLocal.value, c = o.requestMethod.value, r = o.requestCache.value;
             e.file.download({
                 url: n,
                 urlLocal: u,
                 readAs: l,
                 requestMethod: c,
-                requestCache: s,
+                requestCache: r,
                 before: function(e) {
                     t && (e.responseType = t);
                 }
@@ -97,13 +101,13 @@
             }) : console.log("urlLocal?");
         },
         downloadThenSave: function(o) {
-            var n = o.url.value, l = o.readAs.value, t = o.responseType.value, u = "true" == o.urlLocal.value || o.urlLocal.value, c = o.requestMethod.value, s = o.requestCache.value;
+            var n = o.url.value, l = o.readAs.value, t = o.responseType.value, u = "true" == o.urlLocal.value || o.urlLocal.value, c = o.requestMethod.value, r = o.requestCache.value;
             e.file.download({
                 url: n,
                 urlLocal: u,
                 readAs: l,
                 requestMethod: c,
-                requestCache: s,
+                requestCache: r,
                 fileOption: {
                     create: !0
                 },

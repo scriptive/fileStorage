@@ -1,15 +1,15 @@
 return new Promise(function(resolve, reject) {
-  var xmlHttp = win.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+  var xhr = win.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
   var Percentage = 0;
-  xmlHttp.addEventListener("progress", function(e) {
+  xhr.addEventListener("progress", function(e) {
       Percentage++;
       if (app.hasCallback(Query,'progress')){
         if (e.lengthComputable) {
           Percentage = Math.floor(e.loaded / e.total * 100);
           Query.progress(Percentage);
-        } else if (xmlHttp.readyState == XMLHttpRequest.DONE) {
+        } else if (xhr.readyState == XMLHttpRequest.DONE) {
           Query.progress(100);
-        } else if (xmlHttp.status != 200) {
+        } else if (xhr.status != 200) {
           Query.progress(Math.floor(Percentage / 7 * 100));
           Percentage++;
         } else {
@@ -17,8 +17,8 @@ return new Promise(function(resolve, reject) {
         }
       }
   }, false);
-  xmlHttp.addEventListener("load", function (e) {
-    Query.urlResponse = xmlHttp.responseURL;
+  xhr.addEventListener("load", function (e) {
+    Query.urlResponse = xhr.responseURL;
     Query.fileName = Query.url.replace(/[\#\?].*$/, '').substring(Query.url.lastIndexOf('/') + 1);
     Query.fileExtension = Query.fileName.split('.').pop();
     if(Query.urlLocal){
@@ -39,20 +39,20 @@ return new Promise(function(resolve, reject) {
     }
     Query.fileCharset = 'UTF-8';
     Query.fileSize = e.total;
-    Query.data = xmlHttp.response;
+    Query.data = xhr.response;
     if (app.setting.extension[Query.fileExtension])Query.fileType = app.setting.extension[Query.fileExtension].ContentType;
-    if (xmlHttp.responseType) {
-      Query.dataType = xmlHttp.responseType;
-      Query.fileType = (xmlHttp.response.type)?xmlHttp.response.type:Query.fileType;
+    if (xhr.responseType) {
+      Query.dataType = xhr.responseType;
+      Query.fileType = (xhr.response.type)?xhr.response.type:Query.fileType;
     } else {
-      if (xmlHttp.responseXML) {
-        Query.fileCharset = xmlHttp.responseXML.charset;
-        Query.fileType = xmlHttp.responseXML.contentType;
-        Query.xml = xmlHttp.responseXML;
+      if (xhr.responseXML) {
+        Query.fileCharset = xhr.responseXML.charset;
+        Query.fileType = xhr.responseXML.contentType;
+        Query.xml = xhr.responseXML;
       }
-      Query.fileContent = xmlHttp.responseText;
+      Query.fileContent = xhr.responseText;
     }
-    if (xmlHttp.status == 200) {
+    if (xhr.status == 200) {
       delete Query.before;
       delete Query.progress;
       app.afterDownload(Query).then(function(){
@@ -71,19 +71,19 @@ return new Promise(function(resolve, reject) {
       },function(e){
         reject(e);
       });
-    } else if (xmlHttp.statusText) {
-      reject({message:xmlHttp.statusText+': '+ Query.url,code:xmlHttp.status});
-    } else if(xmlHttp.status) {
-      reject({message:app.message.Fail,code:xmlHttp.status});
+    } else if (xhr.statusText) {
+      reject({message:xhr.statusText+': '+ Query.url,code:xhr.status});
+    } else if(xhr.status) {
+      reject({message:app.message.Fail,code:xhr.status});
     } else {
       reject({message:app.message.UnknownError});
     }
   }, false);
-  // xmlHttp.addEventListener('readystatechange', function(e) {});
-  xmlHttp.addEventListener("error", function(e) {
+  // xhr.addEventListener('readystatechange', function(e) {});
+  xhr.addEventListener("error", function(e) {
       reject(e);
   }, false);
-  xmlHttp.addEventListener("abort", function(e) {
+  xhr.addEventListener("abort", function(e) {
       reject(e);
   }, false);
   if (Query.requestCache) {
@@ -92,18 +92,18 @@ return new Promise(function(resolve, reject) {
       Query.urlRequest = Query.url;
   }
   if(Query.url){
-      xmlHttp.open(Query.requestMethod ? Query.requestMethod : 'GET', Query.urlRequest, true);
+      xhr.open(Query.requestMethod ? Query.requestMethod : 'GET', Query.urlRequest, true);
       // NOTE: how 'before' function should do!
-      // xmlHttp.responseType = "blob";
-      // xmlHttp.responseType = "document";
-      // xmlHttp.responseType = "json";
-      // xmlHttp.responseType = "text";
-      // xmlHttp.responseType = 'arraybuffer';
-      // xmlHttp.setRequestHeader("Access-Control-Allow-Origin", "*");
-      // xmlHttp.withCredentials = true;
-      // if (app.hasCallback(Query,'before'))Query.before(xmlHttp);
-      app.hasCallbackMethod(Query,'before')(xmlHttp);
-      xmlHttp.send();
+      // xhr.responseType = "blob";
+      // xhr.responseType = "document";
+      // xhr.responseType = "json";
+      // xhr.responseType = "text";
+      // xhr.responseType = 'arraybuffer';
+      // xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
+      // xhr.withCredentials = true;
+      // if (app.hasCallback(Query,'before'))Query.before(xhr);
+      app.hasCallbackMethod(Query,'before')(xhr);
+      xhr.send();
   }else{
       reject({message:app.message.NoURLProvided});
   }

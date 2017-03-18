@@ -8,12 +8,14 @@ For [License](LICENSE) information.
 
 ## TODO
 - [x] open() returned [fileContent, fileType, fileSize]
+- [ ] browse()
 
 ## file!
 - [x] download
 - [x] save
 - [x] open
 - [x] delete
+- [ ] directory
 
 :sparkles: :camel: :boom:
 

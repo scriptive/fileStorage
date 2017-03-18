@@ -21,8 +21,7 @@
       Meta:{
         script:['filestorage min'],
         agent:false
-      },
-      Execute:['load']
+      }
     },
     ready:function(){
       this.config.msg.info = document.querySelector("div#msg");
@@ -34,16 +33,16 @@
 <body>
   <ul id="notification">
     <li>
-      <h1 title="1.0.2">fileStorage demo</h1>
-      <p class="version">1.0.1</p>
+      <h1>fileStorage</h1>
+      <p class="version">1.0.0</p>
       <div id="msg" title="...">a moment please!</div>
     </li>
   </ul>
-  <div id="demo" style="display:none;">
+  <div id="demo" style="display:none;" data-content="dataDemo">
     <dl class="configuration">
       <dt>
         <h2>fileStorage</h2>
-        <p class="version">1.0.2</p>
+        <p class="version" data-content="dataVersion">1.0.0</p>
         <p title="Base">[storage,database]</p>
         <p title="RequestQuota">default is 1073741824.</p>
         <p class="support" title="Support">Configuration</p>
