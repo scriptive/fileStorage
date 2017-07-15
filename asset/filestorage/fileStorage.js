@@ -39,8 +39,11 @@
     //   // TODO: ?
     // },
     open:function(a,b){
-      if (typeof a === 'object')app.mergeObject(app.config,a);
-      return (app.config.support.length)?app.user:app.ready(b);
+      return app.openRequest(a,b);
+    },
+    openRequest:function(a,b){
+      if (a && typeof a === 'object')this.mergeObject(this.config,a);
+      return (this.ready.constructor === Function)?this.ready(b):this.user;
     },
     ready:function(response){
       return this.ready = new Promise(function(resolve, reject) {
@@ -48,8 +51,13 @@
             // NOTE: success
             // REVIEW: app.user.file, user.database, user.storage are created if they support
             if (app.config.support.indexOf(app.config.Base) == -1)app.config.Base = app.config.support[0];
-            Object.defineProperty(app.user, 'file', {enumerable: false, value:app.file[app.config.Base]});
-            // if(!app.config.message)app.config.message = app.message.RequestFileSystem;
+            // Object.defineProperty(app.user, 'file', {enumerable: false, value:app.file[app.config.Base]});
+            Object.defineProperties(app.user,{
+              file:{
+                enumerable: false, value:app.file[app.config.Base]
+              }
+            });
+            if(!app.config.message)app.config.message = app.message.RequestFileSystem;
             resolve(app.user[app.config.Base]);
         }, function(e) {
           // NOTE: fail
@@ -68,8 +76,9 @@
       }).then(function(e) {
         app.hasCallbackMethod(response,'success').call(app.user,e);
       }, function(e) {
-        app.hasCallbackMethod(response,'fail').call(app.user,e);
+        app.hasCallbackMethod(response,'fail')(e);
       }).then(function(){
+        // win[os]=app.user;
         app.hasCallbackMethod(response,'done').call(app.user,app.config);
         // app.hasCallbackMethod(response,'done')(app.config);
         return app.user;
@@ -121,12 +130,13 @@
         return app.ready.then(function(user){
           return user.file.delete(Query);
         });
+      },
+      browse:function(Query){
+        return app.ready.then(function(user){
+          // TODO: ???
+        });
       }
     }
   };
   win[os] = app.open;
 }("fileStorage",window));
-/*
-win[os] = new user(a,b);
-
-*/

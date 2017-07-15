@@ -19,20 +19,28 @@ document.addEventListener('DOMContentLoaded', function() {
         done: function(status) {
           // NOTE: complatedCallback, return value can be string, depend on success or error!
           // REVIEW: executed either success or fail!
-          console.log('init.done',status);
+          // console.log('init.done',status);
+          // return this;
+          console.log(this);
         },
         fail: function(status) {
           // NOTE: failCallback, return value can be string!
           // REVIEW: executed to warn the Browser does not support 'requestFileSystem', message might be different Browser to Browser!
-          console.log('init.fail',status);
+          // console.log('init.fail',status);
         },
         success: function(fs) {
           // NOTE: successCallback! Can be started from 'fs.root'!
           // REVIEW: Browser supports 'requestFileSystem'!
-          console.warn('init.success',fs);
+          // console.warn('init.success',fs);
         }
       }
   );
+  // console.log();
+  // file.then(function(e){
+  //   // console.log('???');
+  //   console.log(e);
+  // });
+  // console.log(file);
   document.getElementById('deleteDatabase').addEventListener('click',function(event){
     var o = event.target, database = o.dataset.database;
     if (database) {

@@ -17,7 +17,7 @@ start: function() {
 },
 IndexedDB: function(){
   return new Promise(function(resolve, reject) {
-    app.user.db = win.indexedDB || win.mozIndexedDB || win.webkitIndexedDB || win.msIndexedDB;
+    Object.defineProperty(app.user, 'db', {enumerable: false, value:win.indexedDB || win.mozIndexedDB || win.webkitIndexedDB || win.msIndexedDB});
     try {
       var db = app.user.db.open(app.config.objectStore.name, app.config.objectStore.version);
       db.onerror = function(){
@@ -71,7 +71,8 @@ IndexedDB: function(){
 localStorage: function(){
   return new Promise(function(resolve, reject) {
     try {
-      app.user.db = win.localStorage;
+      // app.user.db = win.localStorage;
+      Object.defineProperty(app.user, 'db', {enumerable: false, value:win.localStorage});
       resolve();
     } catch (e) {
       reject(e);

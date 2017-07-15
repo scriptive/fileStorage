@@ -50,7 +50,7 @@ var file = fileStorage({
 );
 ```
 ## Download
-how **download** work!
+how **download** work `fileStorage().download`!
 ```javascript
 file.download({
   url: 'http://www.example.com/file.xml',
@@ -87,7 +87,7 @@ file.download({
 });
 ```
 ## Save
-how **save** work!
+how **save** work `fileStorage().save`!
 ```javascript
 file.save({
   urlLocal: 'directory/filename.txt',
@@ -104,7 +104,7 @@ file.save({
 });
 ```
 ## Open
-how **open** work!
+how **open** work `fileStorage().open`!
 ```javascript
 file.open({
   urlLocal: 'directory/filename.txt',
@@ -118,7 +118,7 @@ file.open({
 });
 ```
 ## Delete
-how **delete** work!
+how **delete** work `fileStorage().delete`!
 ```javascript
 file.delete({
   urlLocal: 'directory/filename.txt',
@@ -132,7 +132,7 @@ file.delete({
 });
 ```
 ## Download then save
-how **download** then **save** work!
+how **download** then **save** work `fileStorage().download`!
 ```javascript
 file.download({
   url: 'http://www.example.com/file.xml',

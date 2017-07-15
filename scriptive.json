@@ -1,8 +1,8 @@
 {
   "app": {
     "name": "fileStorage",
-    "version":"1.0.2",
-    "build": "1.0.2",
+    "version":"1.0.3",
+    "build": "1.0.3",
     "library": {},
     "dist": {
       "file": {}
