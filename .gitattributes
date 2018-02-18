@@ -16,15 +16,11 @@
 *.rtf	 diff=astextplain
 *.RTF	 diff=astextplain
 
-# Scriptive excluded
+
 /.git export-ignore
 /*.md export-ignore
-/docs export-ignore
-/public export-ignore
-/pro export-ignore
-/asset/filestorage export-ignore
-/asset/filesystask export-ignore
-/tests export-ignore
+/*.* export-ignore
+/asset export-ignore
 
 .editorconfig export-ignore
 .gitattributes export-ignore

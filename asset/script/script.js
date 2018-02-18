@@ -78,7 +78,11 @@ var file, msgContainer, app = {
   },
   visibleElement: function(element) {
     // incorrectIsVisible = window.getComputedStyle(codeBlock, null).getPropertyValue('display');
-    return window.getComputedStyle(element).display === 'block';
+    try {
+      return window.getComputedStyle(element).display === 'block';
+    } catch (e) {
+      return false;
+    }
   },
   form:{
     watch:function(){

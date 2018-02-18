@@ -74,7 +74,11 @@ var file, msgContainer, app = {
         element.addEventListener("submit", callback);
     },
     visibleElement: function(element) {
-        return window.getComputedStyle(element).display === "block";
+        try {
+            return window.getComputedStyle(element).display === "block";
+        } catch (e) {
+            return false;
+        }
     },
     form: {
         watch: function() {
