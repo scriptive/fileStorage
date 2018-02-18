@@ -1,13 +1,13 @@
 start: function() {
   return new Promise(function(resolve, reject) {
-    if (app.config.objectStore){
-      app.database.IndexedDB().then(function(e){
+    if (config.objectStore){
+      $.database.IndexedDB().then(function(e){
         resolve(e);
       },function(e){
         reject(e);
       });
     } else {
-      app.database.localStorage().then(function(e){
+      $.database.localStorage().then(function(e){
         resolve(e);
       },function(e){
         reject(e);
@@ -17,14 +17,14 @@ start: function() {
 },
 IndexedDB: function(){
   return new Promise(function(resolve, reject) {
-    Object.defineProperty(app.user, 'db', {enumerable: false, value:win.indexedDB || win.mozIndexedDB || win.webkitIndexedDB || win.msIndexedDB});
+    Object.defineProperty($.user, 'db', {enumerable: false, value:win.indexedDB || win.mozIndexedDB || win.webkitIndexedDB || win.msIndexedDB});
     try {
-      var db = app.user.db.open(app.config.objectStore.name, app.config.objectStore.version);
+      var db = $.user.db.open(config.objectStore.name, config.objectStore.version);
       db.onerror = function(){
         reject(this.error);
       };
       db.onupgradeneeded = function(){
-        var o = app.config.objectStore.store;
+        var o = config.objectStore.store;
         if (typeof o === 'object') {
           for (var i in o) {
             if (o.hasOwnProperty(i)) {
@@ -48,19 +48,19 @@ IndexedDB: function(){
         }
       };
       db.onsuccess = function(e){
-        var o = app.config.objectStore.store.file;
+        var o = config.objectStore.store.file;
         if (typeof o ==='object' && o.hasOwnProperty('name')) {
-          app.config.objectStore.store.file = o.name;
+          config.objectStore.store.file = o.name;
         }
-        // app.user.objectStore = this.result;
+        // $.user.objectStore = this.result;
         // console.log('2',e);
-        // app.support.database = this.result;
+        // $.support.database = this.result;
         // console.log(e.target.result, this.result);
-        app.config.support.push('database');
-        Object.defineProperty(app.user, 'database', {enumerable: false, value:e.target.result});
+        config.support.push('database');
+        Object.defineProperty($.user, 'database', {enumerable: false, value:e.target.result});
         // objectStore, object
-        // if (app.config.support.indexOf('database') == -1)app.config.support.push('database');
-        // app.config.support.push('database');
+        // if (config.support.indexOf('database') == -1)config.support.push('database');
+        // config.support.push('database');
         resolve(this.result);
       };
     } catch (e) {
@@ -71,8 +71,8 @@ IndexedDB: function(){
 localStorage: function(){
   return new Promise(function(resolve, reject) {
     try {
-      // app.user.db = win.localStorage;
-      Object.defineProperty(app.user, 'db', {enumerable: false, value:win.localStorage});
+      // $.user.db = win.localStorage;
+      Object.defineProperty($.user, 'db', {enumerable: false, value:win.localStorage});
       resolve();
     } catch (e) {
       reject(e);

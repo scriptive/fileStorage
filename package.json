@@ -1,0 +1,51 @@
+{
+  "name": "fileStorage",
+  "version": "1.0.0",
+  "description": "UTF8",
+  "config": {
+    "common": {
+      "asset": {
+        "root": "asset"
+      },
+      "public": {
+        "root": "./"
+      },
+      "dist": {
+        "root": "dist"
+      }
+    },
+    "app": [
+      "fileStorage"
+    ]
+  },
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "cli-color": "^1.2.0",
+    "fs-extra": "^4.0.2",
+    "graceful-fs": "^4.1.11",
+    "gulp": "^3.9.1",
+    "gulp-clean-css": "^3.9.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-include": "^2.3.1",
+    "gulp-sass": "^3.1.0",
+    "gulp-uglify": "^3.0.0",
+    "gulp-util": "^3.0.8",
+    "ini": "^1.3.4",
+    "mysql": "^2.15.0",
+    "node-sass": "^4.7.1",
+    "node.extend": "^2.0.0",
+    "request": "^2.83.0",
+    "uglify-js": "^3.3.8",
+    "xmldom": "^0.1.27"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "task": "node ./task.js task"
+  },
+  "author": "Khen Solomon Lethil",
+  "license": "MIT"
+}

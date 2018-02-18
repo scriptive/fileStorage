@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var urlLocal = (o.urlLocal.value=='true')?true:o.urlLocal.value;
     var requestMethod =o.requestMethod.value;
     var requestCache = o.requestCache.value;
-    
+
     // NOTE: how **download** work!
     file.download({
       url: url,
@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function() {
       requestMethod: requestMethod,
       // requestMethod: 'GET',
       // requestMethod: 'POST',
-      
+
       requestCache:requestCache,
       // requestCache:false,
       // requestCache:true,

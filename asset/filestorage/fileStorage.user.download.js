@@ -3,7 +3,7 @@ return new Promise(function(resolve, reject) {
   var Percentage = 0;
   xhr.addEventListener("progress", function(e) {
       Percentage++;
-      if (app.hasCallback(Query,'progress')){
+      if ($.hasCallback(Query,'progress')){
         if (e.lengthComputable) {
           Percentage = Math.floor(e.loaded / e.total * 100);
           Query.progress(Percentage);
@@ -40,7 +40,7 @@ return new Promise(function(resolve, reject) {
     Query.fileCharset = 'UTF-8';
     Query.fileSize = e.total;
     Query.data = xhr.response;
-    if (app.setting.extension[Query.fileExtension])Query.fileType = app.setting.extension[Query.fileExtension].ContentType;
+    if ($.setting.extension[Query.fileExtension])Query.fileType = $.setting.extension[Query.fileExtension].ContentType;
     if (xhr.responseType) {
       Query.dataType = xhr.responseType;
       Query.fileType = (xhr.response.type)?xhr.response.type:Query.fileType;
@@ -52,12 +52,12 @@ return new Promise(function(resolve, reject) {
       }
       Query.fileContent = xhr.responseText;
     }
-    if (xhr.status == 200) {
+    if (xhr.status == 200 || xhr.status == 0) {
       delete Query.before;
       delete Query.progress;
-      app.afterDownload(Query).then(function(){
+      $.afterDownload(Query).then(function(){
         // TODO: resolve should return(Query,user,api Native)
-        if(typeof Query.fileOption == 'object' && Query.fileOption.create === true && Query.urlLocal && app.config.support.length){
+        if(typeof Query.fileOption == 'object' && Query.fileOption.create === true && Query.urlLocal && config.support.length){
           user.file.save(Query).then(function(e){
             Query.fileCreation=true;
             Query.api=e;
@@ -74,9 +74,9 @@ return new Promise(function(resolve, reject) {
     } else if (xhr.statusText) {
       reject({message:xhr.statusText+': '+ Query.url,code:xhr.status});
     } else if(xhr.status) {
-      reject({message:app.message.Fail,code:xhr.status});
+      reject({message:$.message.Fail,code:xhr.status});
     } else {
-      reject({message:app.message.UnknownError});
+      reject({message:$.message.UnknownError});
     }
   }, false);
   // xhr.addEventListener('readystatechange', function(e) {});
@@ -101,10 +101,10 @@ return new Promise(function(resolve, reject) {
       // xhr.responseType = 'arraybuffer';
       // xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
       // xhr.withCredentials = true;
-      // if (app.hasCallback(Query,'before'))Query.before(xhr);
-      app.hasCallbackMethod(Query,'before')(xhr);
+      // if ($.hasCallback(Query,'before'))Query.before(xhr);
+      $.hasCallbackMethod(Query,'before')(xhr);
       xhr.send();
   }else{
-      reject({message:app.message.NoURLProvided});
+      reject({message:$.message.NoURLProvided});
   }
 });

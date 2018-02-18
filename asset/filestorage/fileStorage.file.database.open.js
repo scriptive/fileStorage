@@ -1,7 +1,7 @@
 return new Promise(function(resolve, reject) {
   try {
-    var storeTable = app.config.objectStore.store.file, 
-    objectTransaction = app.user.database.transaction([storeTable],'readwrite'),
+    var storeTable = config.objectStore.store.file, 
+    objectTransaction = $.user.database.transaction([storeTable],'readwrite'),
     objectStore = objectTransaction.objectStore(storeTable);
     // var storeDelete = objectStore.delete(Query.urlLocal);
     // var storeContains = objectStore.indexNames.contains(Query.urlLocal);
@@ -15,7 +15,7 @@ return new Promise(function(resolve, reject) {
       var cursor = this.result;
       if (cursor) {
         // NOTE: key already exist -> cursor.update({});
-        app.readBlob(cursor.value,Query.readAs).then(function(e){
+        $.readBlob(cursor.value,Query.readAs).then(function(e){
           Query.fileContent = e;
           // Query.fileType = cursor.value.type;
           Query.fileSize = cursor.value.size;
@@ -23,7 +23,7 @@ return new Promise(function(resolve, reject) {
           if (cursor.value.type) {
             Query.fileType = cursor.value.type;
           } else if (Query.fileExtension) {
-              if (app.setting.extension[Query.fileExtension])Query.fileType = app.setting.extension[Query.fileExtension].ContentType;
+              if ($.setting.extension[Query.fileExtension])Query.fileType = $.setting.extension[Query.fileExtension].ContentType;
           }
           resolve(Query);
         },function(e){
@@ -31,7 +31,7 @@ return new Promise(function(resolve, reject) {
         });
       } else {
         // NOTE: key not exist -> objectStore.add(obj)
-        reject({message:app.message.NoFileFound});
+        reject({message:$.message.NoFileFound});
       }
     };
   } catch (e) {

@@ -1,9 +1,9 @@
 return new Promise(function(resolve, reject) {
   try {
-    var storeTable = app.config.objectStore.store.file, 
-    objectTransaction = app.user.database.transaction([storeTable],'readwrite'),
+    var storeTable = config.objectStore.store.file, 
+    objectTransaction = $.user.database.transaction([storeTable],'readwrite'),
     objectStore = objectTransaction.objectStore(storeTable);
-    app.createBlob(Query);
+    $.createBlob(Query);
     objectTransaction.oncomplete = function(e){
       resolve(e);
     };

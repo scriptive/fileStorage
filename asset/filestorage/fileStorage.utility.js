@@ -10,7 +10,7 @@ return new Promise(function(resolve, reject) {
 });
 */
 mergeObject:function(to){
-  // app.mergeObject({},true, app.{});
+  // $.mergeObject({},true, $.{});
   var a = arguments,s, b = Object(to);
   for (var o = 1; o < a.length; o++) {
     if (a[o].constructor === Object) {
@@ -133,7 +133,7 @@ afterDownload:function(Query){
     Query.blob = Query.data;
   }
   return new Promise(function(resolve, reject) {
-    app.readBlob(Query.blob,Query.readAs).then(function(e){
+    $.readBlob(Query.blob,Query.readAs).then(function(e){
       Query.fileContent = e;
       resolve(Query);
     },function(e){
@@ -152,7 +152,7 @@ dirCreator:function(root,dir,callback){
       function(dirEntry){
         if (dir.length) {
           // NOTE: processing to sub dirs...
-          app.dirCreator(dirEntry, dir.slice(1), callback);
+          $.dirCreator(dirEntry, dir.slice(1), callback);
         } else {
           // NOTE: Creating directory success!
           callback(true);

@@ -1,6 +1,6 @@
 /*!
     fileStorage -- Javascript file Storage
-    Version {package.version}-{application.buildDate}
+    Version 1.0.3
     https://scriptive.github.io/fileStorage
 */
 (function(os,win) {
@@ -11,12 +11,12 @@
   // var ob='app';
   // filesystem:http://localhost/temporary/
   // filesystem:http://localhost/persistent/
-  var app={
+  var config={
+    // =require fileStorage.config.js
+  },
+  $={
     setting:{
       // =require fileStorage.setting.js
-    },
-    config:{
-      // =require fileStorage.config.js
     },
     message:{
       // =require fileStorage.message.js
@@ -39,49 +39,49 @@
     //   // TODO: ?
     // },
     open:function(a,b){
-      return app.openRequest(a,b);
+      return $.openRequest(a,b);
     },
     openRequest:function(a,b){
-      if (a && typeof a === 'object')this.mergeObject(this.config,a);
+      if (a && typeof a === 'object')this.mergeObject(config,a);
       return (this.ready.constructor === Function)?this.ready(b):this.user;
     },
     ready:function(response){
       return this.ready = new Promise(function(resolve, reject) {
-        app.initiate.start(function(e) {
+        $.initiate.start(function(e) {
             // NOTE: success
-            // REVIEW: app.user.file, user.database, user.storage are created if they support
-            if (app.config.support.indexOf(app.config.Base) == -1)app.config.Base = app.config.support[0];
-            // Object.defineProperty(app.user, 'file', {enumerable: false, value:app.file[app.config.Base]});
-            Object.defineProperties(app.user,{
+            // REVIEW: $.user.file, user.database, user.storage are created if they support
+            if (config.support.indexOf(config.Base) == -1)config.Base = config.support[0];
+            // Object.defineProperty($.user, 'file', {enumerable: false, value:$.file[config.Base]});
+            Object.defineProperties($.user,{
               file:{
-                enumerable: false, value:app.file[app.config.Base]
+                enumerable: false, value:$.file[config.Base]
               }
             });
-            if(!app.config.message)app.config.message = app.message.RequestFileSystem;
-            resolve(app.user[app.config.Base]);
+            if(!config.message)config.message = $.message.RequestFileSystem;
+            resolve($.user[config.Base]);
         }, function(e) {
           // NOTE: fail
           if (typeof e === 'string') {
-            app.config.message = e;
+            config.message = e;
           } else if (e.message) {
-            app.config.message = e.message;
-            if(e.name)app.config.name = e.name;
-            if(e.code)app.config.status = e.code;
+            config.message = e.message;
+            if(e.name)config.name = e.name;
+            if(e.code)config.status = e.code;
           } else {
-            app.config.status = e;
-            app.config.message = app.message.PleaseSeeStatus;
+            config.status = e;
+            config.message = $.message.PleaseSeeStatus;
           }
-          reject(app.config);
+          reject(config);
         });
       }).then(function(e) {
-        app.hasCallbackMethod(response,'success').call(app.user,e);
+        $.hasCallbackMethod(response,'success').call($.user,e);
       }, function(e) {
-        app.hasCallbackMethod(response,'fail')(e);
+        $.hasCallbackMethod(response,'fail')(e);
       }).then(function(){
-        // win[os]=app.user;
-        app.hasCallbackMethod(response,'done').call(app.user,app.config);
-        // app.hasCallbackMethod(response,'done')(app.config);
-        return app.user;
+        // win[os]=$.user;
+        $.hasCallbackMethod(response,'done').call($.user,config);
+        // $.hasCallbackMethod(response,'done')(config);
+        return $.user;
       }), this.user;
     },
     file:{
@@ -112,31 +112,31 @@
     },
     user:{
       download:function(Query){
-        return app.ready.then(function(user){
+        return $.ready.then(function(user){
           // =require fileStorage.user.download.js
         });
       },
       save:function(Query){
-        return app.ready.then(function(user){
+        return $.ready.then(function(user){
           return user.file.save(Query);
         });
       },
       open:function(Query){
-        return app.ready.then(function(user){
+        return $.ready.then(function(user){
           return user.file.open(Query);
         });
       },
       delete:function(Query){
-        return app.ready.then(function(user){
+        return $.ready.then(function(user){
           return user.file.delete(Query);
         });
       },
       browse:function(Query){
-        return app.ready.then(function(user){
+        return $.ready.then(function(user){
           // TODO: ???
         });
       }
     }
   };
-  win[os] = app.open;
+  win[os] = $.open;
 }("fileStorage",window));

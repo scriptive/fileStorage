@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+  <title>fileStorage</title>
+  <meta content="fileStorage" property="og:title">
+  <meta content="Javascript file Storage" name="description">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <link rel="stylesheet" href="css/style.css">
+  <!-- <script src="cordova.js"></script> -->
+  <script src="js/filestorage.min.js"></script>
+  <script src="js/script.js"></script>
+</head>
+<body>
+  <div class="initiate">
+    <div id="configuration">
+      <h1 data-title="1.0.3">fileStorage</h1>
+      <p data-title="Base" id="Base">storage?</p>
+      <p data-title="RequestQuota" id="RequestQuota">0?</p>
+      <p data-title="ResponseQuota" id="ResponseQuota">0?</p>
+      <p id="support" data-title="support">storage?,database?</p>
+      <p id="message">...</p>
+    </div>
+    <div>
+      <p class="toggleCode">initiate code Toggle</p>
+<pre><code>var file = fileStorage({
+    Base: 'storage',
+    RequestQuota: 1073741824,
+    Permission: 1,
+    objectStore:{
+      name:'fileStorage',
+      version:1,
+      file:'file',
+      other:{
+       name:'otherName',option:{}
+      }
+    }
+  },
+  {
+    done: function(status) {
+      // NOTE: doneCallback!
+      // REVIEW: executed either success or fail!
+    },
+    fail: function(status) {
+      // NOTE: failCallback
+      // REVIEW: executed to warn the Browser does not support 'requestFileSystem'!
+    },
+    success: function(fs) {
+      // NOTE: successCallback
+      // REVIEW: Browser supports 'requestFileSystem' or 'IndexedDB'!
+    }
+  }
+);</code></pre>
+    </div>
+  </div>
+  <div class="download">
+    <div>
+      <form id="download" action="#" method="post">
+        <div>
+          <p>url</p>
+          <p>
+            <input type="text" name="url" list="download-urlList" placeholder="Pick a URL..">
+            <datalist id="download-urlList">
+              <option value="tmp/Jailhouse-Rock-Leiber-Stoller.mp3">
+              <option value="tmp/test.xml">
+              <option value="tmp/test.json">
+            </datalist>
+          </p>
+        </div>
+        <div>
+          <p>requestMethod</p>
+          <p>
+            <select name="requestMethod">
+              <option value="GET">GET</option>
+              <option value="POST">POST</option>
+            </select>
+          </p>
+        </div>
+        <div>
+          <p>requestCache</p>
+          <p>
+            <select name="requestCache">
+              <option value="">false</option>
+              <option value="true">true</option>
+            </select>
+          </p>
+        </div>
+        <div>
+          <p>responseType</p>
+          <p>
+            <select name="responseType">
+              <option value="">Default</option>
+              <option value="blob">Blob</option>
+              <option value="arraybuffer">Arraybuffer</option>
+              <option value="document">document</option>
+              <option value="json">JSON</option>
+            </select>
+          </p>
+        </div>
+        <div>
+          <p>readAs</p>
+          <p>
+            <select name="readAs">
+              <option value="">Default</option>
+              <option value="readAsText">Text</option>
+              <option value="readAsArrayBuffer">ArrayBuffer</option>
+              <option value="readAsDataURL">DataURL</option>
+              <option value="readAsBinaryString">BinaryString</option>
+              <option value="createObjectURL">createObjectURL</option>
+            </select>
+          </p>
+        </div>
+        <div>
+          <p>urlLocal</p>
+          <p>
+            <input type="text" name="urlLocal" list="download-urlLocalList" placeholder="set urlLocal">
+            <datalist id="download-urlLocalList">
+              <option value="true">
+              <option value="directory/filename">
+            </datalist>
+          </p>
+        </div>
+        <div>
+          <p><input type="submit" value="Download"></p>
+        </div>
+      </form>
+    </div>
+    <div>
+      <p class="toggleCode">how <strong>download</strong> work!</p>
+<pre><code>file.download({
+  url: 'http://www.example.com/file.xml',
+  urlLocal: 'filename.xml',
+  // urlLocal===true -> file.xml
+  // readAs: 'createObjectURL',
+  // [readAsText,readAsArrayBuffer,readAsDataURL,readAsBinaryString]
+  // requestMethod: 'GET', [GET,POST]
+  // requestCache:false, [true]
+  before: function(xmlHttp){
+  },
+  progress: function(Percentage){
+    console.log(Percentage);
+  }
+}).then(function(e){
+  console.log('success');
+},function(e){
+  console.log('fail');
+}).then(function(e){
+  console.log('done');
+});</code></pre>
+    </div>
+  </div>
+  <div class="save">
+    <div>
+      <form id="save" action="#" method="post">
+          <div>
+            <p>fileContent</p>
+            <p>
+              <textarea name="fileContent" rows="4"></textarea>
+            </p>
+          </div>
+          <div>
+            <p>fileType</p>
+            <p>
+              <input type="text" name="fileType" list="fileTypeList" placeholder="set fileType">
+              <datalist id="fileTypeList">
+                <option value="text/plain">
+                <option value="application/json">
+                <option value="image/jpeg">
+                <option value="image/png">
+                <option value="application/xml">
+                <option value="application/javascript">
+                <option value="application/pdf">
+                <option value="text/css">
+                <option value="audio/mp3">
+              </datalist>
+            </p>
+          </div>
+          <div>
+            <p>urlLocal</p>
+            <p>
+              <input type="text" name="urlLocal" list="save-urlLocalList" placeholder="set urlLocal">
+              <datalist id="save-urlLocalList">
+                <option value="directory/filename">
+              </datalist>
+            </p>
+          </div>
+          <div>
+            <p><input type="submit" value="Save"></p>
+          </div>
+        </form>
+    </div>
+    <div>
+      <p class="toggleCode">how <strong>save</strong> work!</p>
+<pre><code>file.save({
+  urlLocal: 'directory/filename.txt',
+  blob: new Blob(['this is plain text'], {type: 'text/plain; charset=utf-8'}),
+  // data: 'this is plain text',
+  // fileContent: 'this is plain text',
+  fileType: 'text/plain'
+}).then(function(e){
+  console.log('success');
+},function(e){
+  console.log('fail');
+}).then(function(e){
+  console.log('done');
+});</code></pre>
+    </div>
+  </div>
+  <div class="open">
+    <div>
+      <form id="open" action="#" method="post">
+        <div>
+          <p>urlLocal</p>
+          <p>
+            <input type="text" name="urlLocal" list="open-urlLocalList" placeholder="set urlLocal">
+            <datalist id="open-urlLocalList">
+              <option value="directory/filename">
+            </datalist>
+            <span class="update-urlLocalList">Update</span>
+          </p>
+        </div>
+        <div>
+          <p>readAs</p>
+          <p>
+            <select name="readAs">
+              <option value="">Default</option>
+              <option value="readAsText">Text</option>
+              <option value="readAsArrayBuffer">ArrayBuffer</option>
+              <option value="readAsDataURL">DataURL</option>
+              <option value="readAsBinaryString">BinaryString</option>
+              <option value="createObjectURL">createObjectURL</option>
+            </select>
+          </p>
+        </div>
+        <div>
+          <p><input type="submit" value="Open"></p>
+        </div>
+      </form>
+    </div>
+    <div>
+      <p class="toggleCode">how <strong>open</strong> work!</p>
+<pre><code>file.open({
+  urlLocal: 'directory/filename.txt',
+  readAs: 'createObjectURL'
+}).then(function(e){
+  console.log('success');
+},function(e){
+  console.log('fail');
+}).then(function(e){
+  console.log('done');
+});</code></pre>
+    </div>
+  </div>
+  <div class="delete">
+    <div>
+      <form id="delete" action="#" method="post">
+          <div>
+            <p>urlLocal</p>
+            <p>
+              <input type="text" name="urlLocal" list="delete-urlLocalList" placeholder="set urlLocal">
+              <datalist id="delete-urlLocalList">
+                <option value="directory/filename">
+              </datalist>
+              <span class="update-urlLocalList">Update</span>
+            </p>
+          </div>
+          <div>
+            <p><input type="submit" value="Delete"></p>
+          </div>
+        </form>
+    </div>
+    <div>
+      <p class="toggleCode">how <strong>delete</strong> work!</p>
+<pre><code>file.delete({
+  urlLocal: 'directory/filename.txt',
+  fileNotFound: true // fileNotFound if true return successCallback, even the file is not found!
+}).then(function(e){
+  console.log('success');
+},function(e){
+  console.log('fail');
+}).then(function(e){
+  console.log('done');
+});</code></pre>
+    </div>
+  </div>
+  <div class="downloadThenSave">
+    <div>
+      <form id="downloadThenSave" action="#" method="post">
+          <div>
+            <p>url</p>
+            <p>
+              <input type="text" name="url" list="downloadThenSave-urlList" placeholder="Pick a URL..">
+              <datalist id="downloadThenSave-urlList">
+                <option value="tmp/Jailhouse-Rock-Leiber-Stoller.mp3">
+                <option value="tmp/test.xml">
+                <option value="tmp/test.json">
+              </datalist>
+            </p>
+          </div>
+          <div>
+            <p>requestMethod</p>
+            <p>
+              <select name="requestMethod">
+                <option value="GET">GET</option>
+                <option value="POST">POST</option>
+              </select>
+            </p>
+          </div>
+          <div>
+            <p>requestCache</p>
+            <p>
+              <select name="requestCache">
+                <option value="">false</option>
+                <option value="true">true</option>
+              </select>
+            </p>
+          </div>
+          <div>
+            <p>responseType</p>
+            <p>
+              <select name="responseType">
+                <option value="">Default</option>
+                <option value="blob">Blob</option>
+                <option value="arraybuffer">Arraybuffer</option>
+                <option value="document">document</option>
+                <option value="json">JSON</option>
+              </select>
+            </p>
+          </div>
+          <div>
+            <p>readAs</p>
+            <p>
+              <select name="readAs">
+                <option value="">Default</option>
+                <option value="readAsText">Text</option>
+                <option value="readAsArrayBuffer">ArrayBuffer</option>
+                <option value="readAsDataURL">DataURL</option>
+                <option value="readAsBinaryString">BinaryString</option>
+                <option value="createObjectURL">createObjectURL</option>
+              </select>
+            </p>
+          </div>
+          <div>
+            <p>urlLocal</p>
+            <p>
+              <input type="text" name="urlLocal" list="downloadThenSave-urlLocalList" placeholder="set urlLocal">
+              <datalist id="downloadThenSave-urlLocalList">
+                <option value="true">
+                <option value="directory/filename">
+              </datalist>
+            </p>
+          </div>
+          <div>
+            <p>fileContent</p>
+            <p>
+              defined by "readAs"
+            </p>
+          </div>
+          <div>
+            <p>fileType</p>
+            <p>
+              defined by "XMLHttpRequest"
+            </p>
+          </div>
+          <div>
+            <p><input type="submit" value="Download then save"></p>
+          </div>
+        </form>
+    </div>
+    <div>
+      <p class="toggleCode">how <strong>download</strong> then <strong>save</strong> work!</p>
+<pre><code>file.download({
+  url: 'http://www.example.com/file.xml',
+  urlLocal: true,
+  readAs: 'createObjectURL'
+  fileOption:{
+    create:true
+  },
+  before: function(xmlHttp){
+    xmlHttp.responseType='blob';
+  },
+  progress: function(Percentage){
+    console.log(Percentage);
+  }
+}).then(function(e){
+  console.log('success');
+},function(e){
+  console.log('fail');
+}).then(function(e){
+  console.log('done');
+});</code></pre>
+    </div>
+  </div>
+  <!-- <div class="tmp">
+    <div>
+      Action
+    </div>
+    <div>
+      <p class="toggleCode">Toggle</p>
+<pre><code>Code</code></pre>
+    </div>
+  </div> -->
+</body>
+</html>
