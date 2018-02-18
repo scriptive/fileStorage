@@ -1,9 +1,7 @@
 var file, msgContainer, app = {
   ready: function(callback){
     window.addEventListener('DOMContentLoaded', function(){
-      hljs.initHighlightingOnLoad();
-      // msgContainer= document.getElementById('msg');
-      // msgContainer.innerHTML='init.??';
+      if (window['hljs'])hljs.initHighlightingOnLoad();
       if (callback instanceof Function) {
         if (window.cordova && location.protocol == 'file:') {
           document.addEventListener('deviceready', callback, false);
@@ -183,7 +181,9 @@ var file, msgContainer, app = {
           urlLocal: urlLocal,
           readAs: readAs
         }).then(function(e){
-          console.log('success',e);
+          // console.log('success',e);
+          // console.log(e.fileContent);
+          console.log(JSON.stringify(e));
         },function(e){
           console.log('fail',e);
         }).then(function(e){
@@ -244,7 +244,74 @@ var file, msgContainer, app = {
     }
   }
 };
+/*
+app.ready(function(){
+  window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fs) {
+    // console.log('file system open: ' + fs.name);
+    fs.root.getFile("newPersistentFile.txt", { create: true, exclusive: false }, function (fileEntry) {
+        // console.log("fileEntry is file?" + fileEntry.isFile.toString());
+        // fileEntry.name == 'someFile.txt'
+        // fileEntry.fullPath == '/someFile.txt'
+        writeFile(fileEntry, null);
+    }, function(){
+      console.log('onErrorCreateFile');
+    });
+  }, function(){
+    console.log('onErrorLoadFs');
+  });
+  function writeFile(fileEntry, dataObj) {
+      // Create a FileWriter object for our FileEntry (log.txt).
+      fileEntry.createWriter(function (fileWriter) {
 
+          fileWriter.onwriteend = function() {
+              console.log("Successful file write...");
+              readFile(fileEntry);
+          };
+
+          fileWriter.onerror = function (e) {
+              console.log("Failed file write: " + e.toString());
+          };
+
+          // If data object is not passed in,
+          // create a new Blob instead.
+          if (!dataObj) {
+              dataObj = new Blob(['some file data'], { type: 'text/plain' });
+          }
+
+          fileWriter.write(dataObj);
+      });
+  }
+  function readFile(fileEntry) {
+
+      fileEntry.file(function (file) {
+          var reader = new FileReader();
+
+          reader.onloadend = function() {
+              // console.log("Successful file read: " + this.result);
+              // displayFileData(fileEntry.fullPath + ": " + this.result);
+              console.log(fileEntry.fullPath);
+              console.log(this.result);
+          };
+
+          reader.readAsText(file);
+
+      }, function(){
+        console.log('onErrorReadFile');
+      });
+  }
+  function createFile(dirEntry, fileName, isAppend) {
+      // Creates a new file or returns the file if it already exists.
+      dirEntry.getFile(fileName, {create: true, exclusive: false}, function(fileEntry) {
+
+          writeFile(fileEntry, null, isAppend);
+
+      }, function(){
+        console.log('onErrorCreateFile');
+      });
+
+  }
+});
+*/
 app.ready(function(){
   file = fileStorage({
         Base: 'storage',

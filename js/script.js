@@ -1,7 +1,7 @@
 var file, msgContainer, app = {
     ready: function(callback) {
         window.addEventListener("DOMContentLoaded", function() {
-            hljs.initHighlightingOnLoad();
+            if (window["hljs"]) hljs.initHighlightingOnLoad();
             if (callback instanceof Function) {
                 if (window.cordova && location.protocol == "file:") {
                     document.addEventListener("deviceready", callback, false);
@@ -154,7 +154,7 @@ var file, msgContainer, app = {
                     urlLocal: urlLocal,
                     readAs: readAs
                 }).then(function(e) {
-                    console.log("success", e);
+                    console.log(JSON.stringify(e));
                 }, function(e) {
                     console.log("fail", e);
                 }).then(function(e) {});

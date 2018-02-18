@@ -77,7 +77,7 @@ body {
       &:nth-child(1) {
         >form {
           display: block;
-          font-size: 90%;
+          font-size: 100%;
           padding: 1%;
           div{
             display: table-row;
@@ -128,7 +128,7 @@ body {
           &.toggleCode {
             @include user-select();
             text-align: center;
-            font-size: 12px;
+            font-size: 100%;
             background-color:darken(#F0F0F0,7%);
             padding: 10px 5px;
             // border-radius:3px;
@@ -228,7 +228,71 @@ body {
 //   }
 // }
 
+@media screen and (max-width: $WidthMobile) {
+  body {
+    overflow: hidden;
+    >div {
+      // padding: 1%;
+      >div {
+        &:nth-child(1) {
+          // background-color: #F0F0F0;
+          background-color: lighten(#2885cc,16%);
+          >form {
+            // display: block;
+            // font-size: 90%;
+            // padding: 1%;
+            font-size: 130%;
+            div{
+              // display: table-row;
+              display: block;
+              // background-color: lighten(#2885cc,10%);
+              text-align: center;
+              p{
+                display: block;
+                // display: table-cell; padding: 2px;font-size: 90%;vertical-align: middle;
+                &:first-child{
+                  // width: 100px;
+                  // text-align: right;
+                  // color: #666;
 
+                  width: 100%;
+                  text-align:center;
+                }
+                &:last-child{
+                  // color: #ccc;
+                  input,select,textarea{
+                    // box-shadow:inset 0px 0 1px 1px #ccc; border-radius: 2px;
+                    // padding:5px 7px;
+                    // border: 0;
+                  }
+                  input[type="submit"]{
+                    // box-shadow: 0px 0 0 0 #666;
+                    // background-color: lighten(#2885cc,10%);
+                    // color: #fff;
+                    &:hover{
+                      // color: #545452;
+                    }
+                  }
+                }
+              }
+              &:last-child{
+                // display: block;
+                p{
+                  // display: block;
+                  // margin-left:103px;
+                  // text-align: left;
+
+                  text-align: center;
+                  margin-left:auto;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
 
 // @media screen and (max-width: 736px) {
 //     div.demo{

@@ -12,7 +12,7 @@ return new Promise(function(resolve, reject) {
       if(isBecauseDir.length){
         $.dirCreator($.user.storage,isBecauseDir,function(status,msg){
           if (status){
-            $.user.storage.getFile(Query.urlLocal, {create: true}, function(fileEntry) {  
+            $.user.storage.getFile(Query.urlLocal, {create: true, exclusive: true}, function(fileEntry) {
               $.fileWriter(fileEntry,Query.blob).then(function(e){
                 resolve(e);
               },function(e){

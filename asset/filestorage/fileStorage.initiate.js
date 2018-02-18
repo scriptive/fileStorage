@@ -26,7 +26,8 @@ Chrome: function(done, error) {
         config.ResponseQuota = grantedBytes;
         win.requestfileStorage = win.webkitRequestFileSystem;
         win.resolvefileStorage = win.webkitResolveLocalFileSystemURL;
-
+        config.PERSISTENT = win.PERSISTENT;
+        config.TEMPORARY = win.TEMPORARY;
         // if (win.requestfileStorage instanceof Function) {
         //
         // } else {
@@ -34,7 +35,7 @@ Chrome: function(done, error) {
         // }
         try {
           win.requestfileStorage(
-            config.Permission > 0 ? win.PERSISTENT : win.TEMPORARY,
+            config.Permission > 0 ? config.PERSISTENT : config.TEMPORARY,
             grantedBytes,
             function(e) {
               // $.user.objectLocal = e.root.toURL();
@@ -61,18 +62,25 @@ Chrome: function(done, error) {
 Cordova: function(done, error) {
   // NOTE: see Cordova API
   try {
-    win.requestfileStorage = win.requestFileSystem || win.webkitRequestFileSystem;
-    win.resolvefileStorage = win.resolveLocalFileSystemURL || win.webkitResolveLocalFileSystemURL;
+    // win.requestfileStorage = win.requestFileSystem || win.webkitRequestFileSystem;
+    // win.resolvefileStorage = win.resolveLocalFileSystemURL || win.webkitResolveLocalFileSystemURL;
+    win.requestfileStorage = win.requestFileSystem;
+    win.resolvefileStorage = win.resolveLocalFileSystemURL;
     if (win.requestfileStorage) {
-      if (win.LocalFileSystem) {
-        win.PERSISTENT = win.LocalFileSystem.PERSISTENT;
-        win.TEMPORARY = win.LocalFileSystem.TEMPORARY;
-      }
-      // if (win.cordova && location.protocol === 'file:') {
-      //   win.PERSISTENT =win.PERSISTENT; win.TEMPORARY =win.TEMPORARY;
+      // if (win.LocalFileSystem) {
+      //   win.PERSISTENT = win.LocalFileSystem.PERSISTENT;
+      //   win.TEMPORARY = win.LocalFileSystem.TEMPORARY;
       // }
+      if ('LocalFileSystem' in win) {
+        config.PERSISTENT = LocalFileSystem.PERSISTENT;
+        config.TEMPORARY = LocalFileSystem.TEMPORARY;
+      } else {
+        config.PERSISTENT = win.PERSISTENT;
+        config.TEMPORARY = win.TEMPORARY;
+      }
+      // if (win.cordova && location.protocol === 'file:') {}
       win.requestfileStorage(
-        config.Permission > 0 ? win.PERSISTENT : win.TEMPORARY,
+        config.Permission > 0 ? config.PERSISTENT : config.TEMPORARY,
         config.RequestQuota,
         function(e) {
           config.support.push('storage');

@@ -1,5 +1,17 @@
 fileStorage -- Javascript file Storage
 ========
+
+```shell
+$ cordova plugin add cordova-plugin-file
+$ cordova plugin add cordova-plugin-console
+```
+
+```xml
+<!-- cordova -> config.xml -->
+<preference name="iosPersistentFileLocation" value="Compatibility" />
+<preference name="AndroidPersistentFileLocation" value="Compatibility" />
+```
+
 Demo: https://scriptive.github.io/fileStorage
 
 [Download](dist/filestorage.min.js) lastest version.
@@ -65,7 +77,7 @@ file.download({
 
   // requestMethod: 'GET',
   // requestMethod: 'POST',
-  
+
   // requestCache:false,
   // requestCache:true,
   before: function(xmlHttp){

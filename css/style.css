@@ -64,7 +64,7 @@ body > div > div#configuration {
 
 body > div > div:nth-child(1) > form {
   display: block;
-  font-size: 90%;
+  font-size: 100%;
   padding: 1%; }
   body > div > div:nth-child(1) > form div {
     display: table-row; }
@@ -102,7 +102,7 @@ body > div > div:nth-child(2) {
   body > div > div:nth-child(2) > p.toggleCode {
     -webkit-user-select: none;
     text-align: center;
-    font-size: 12px;
+    font-size: 100%;
     background-color: #dedede;
     padding: 10px 5px;
     color: #666; }
@@ -112,3 +112,22 @@ body > div > div:nth-child(2) {
     padding: 1%;
     margin: 0;
     font-size: 95%; }
+
+@media screen and (max-width: 500px) {
+  body {
+    overflow: hidden; }
+    body > div > div:nth-child(1) {
+      background-color: #65abe1; }
+      body > div > div:nth-child(1) > form {
+        font-size: 130%; }
+        body > div > div:nth-child(1) > form div {
+          display: block;
+          text-align: center; }
+          body > div > div:nth-child(1) > form div p {
+            display: block; }
+            body > div > div:nth-child(1) > form div p:first-child {
+              width: 100%;
+              text-align: center; }
+          body > div > div:nth-child(1) > form div:last-child p {
+            text-align: center;
+            margin-left: auto; } }

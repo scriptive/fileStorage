@@ -1,12 +1,12 @@
 /*
 return new Promise(function(resolve, reject) {
-  
+
 }).then(function(){
-  
+
 },function(){
-  
+
 }).then(function(){
-  
+
 });
 */
 mergeObject:function(to){
@@ -104,8 +104,8 @@ readBlob:function(a,b){
           file.readAsBinaryString(a);
           break;
         default:
-          resolve(window.URL.createObjectURL(a));
-          window.URL.revokeObjectURL();
+          resolve(win.URL.createObjectURL(a));
+          win.URL.revokeObjectURL();
       }
     } catch (e) {
       reject(e);
@@ -147,22 +147,27 @@ dirChecker:function(dir){
 },
 dirCreator:function(root,dir,callback){
   if (dir[0] == '.' || dir[0] == '')dir = folders.slice(1);
-  root.getDirectory(
-      dir[0], {create: true},
-      function(dirEntry){
-        if (dir.length) {
-          // NOTE: processing to sub dirs...
-          $.dirCreator(dirEntry, dir.slice(1), callback);
-        } else {
-          // NOTE: Creating directory success!
-          callback(true);
+  if (dir.length) {
+    root.getDirectory(
+      // , exclusive: true
+        dir[0], {create: true},
+        function(dirEntry){
+          if (dir.length) {
+            // NOTE: processing to sub dirs...
+            $.dirCreator(dirEntry, dir.slice(1), callback);
+          } else {
+            // NOTE: Creating directory success!
+            callback(true);
+          }
+        },
+        function(e){
+          // NOTE: Creating directory failed!
+          callback(false, e);
         }
-      },
-      function(e){
-        // NOTE: Creating directory failed!
-        callback(false, e);
-      }
-  );
+    );
+  } else {
+    callback(true);
+  }
 },
 fileWriter:function(fileEntry,blob){
   return new Promise(function(resolve, reject) {

@@ -95,10 +95,10 @@ gulp.task('filestorage',function(){
 
 // /home/khensolomon/server/test/hello/www
 // NOTE: Copy
-// gulp.task('copy',function(){
-//     return gulp.src(path.join(rootPublic,'js','*.js'))
-//     .pipe(gulp.dest(path.join('../test/hello/www','js')));
-// });
+gulp.task('copy',function(){
+    return gulp.src(path.join(rootPublic,'js','*.js'))
+    .pipe(gulp.dest(path.join('../test/hello/www','js')));
+});
 // NOTE: Base
 // gulp.task('scriptive',function(){
 //     return gulp.src(path.join(rootAsset,'scriptive','*([^A-Z0-9-]).js'))
@@ -112,7 +112,7 @@ gulp.task('watch', function() {
     gulp.watch(path.join(rootAsset,'sass','*.scss'), ['sass']);
     gulp.watch(path.join(rootAsset,'filestorage','*.js'), ['filestorage']);
     gulp.watch(path.join(rootAsset,'script','*.js'), ['script']);
-    // gulp.watch(path.join(rootPublic,'js','*.js'), ['copy']);
+    gulp.watch(path.join(rootPublic,'js','*.js'), ['copy']);
 });
 // NOTE: TASK
 gulp.task('default', ['watch']);
